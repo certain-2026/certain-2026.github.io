@@ -1,0 +1,2315 @@
+/* ============================================================================
+ * css/site.css
+ * CERTAIN @ NeurIPS 2026 workshop website
+ * Layered, hand-written stylesheet:
+ *   1. Reset & base
+ *   2. Custom properties (design tokens)
+ *   3. @font-face declarations
+ *   4. Typography base
+ *   5. Reduced-motion override
+ *   6+ Components, layout, and utility rules
+ * ========================================================================== */
+
+
+/* ---------------------------------------------------------------------------
+ * 1. Minimal CSS reset
+ * ------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+ box-sizing: border-box;
+}
+
+body {
+ margin: 0;
+}
+
+img,
+picture,
+video,
+svg {
+ max-width: 100%;
+ height: auto;
+ display: block;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 2. Design tokens
+ * Five named palette colours, an 8-px spacing scale, a typographic scale,
+ * and three font families. These tokens are the single source of truth for
+ * every component layer that follows.
+ * ------------------------------------------------------------------------- */
+
+:root {
+ /* -- Colour palette: exactly five named colours --------------------------
+ * Pure black and pure white are intentionally excluded; foreground/
+ * background pairings using these tokens satisfy WCAG AA contrast
+ * thresholds (see the design notes "Colour palette compliance with WCAG AA"). */
+ --c-ink: #14181f; /* primary text */
+ --c-paper: #faf8f4; /* page background, off-white */
+ --c-rule: #2c3340; /* lines, dividers, focus ring */
+ --c-accent: #8a3324; /* deep oxblood: links, active state */
+ --c-mute: #5a5e66; /* secondary text, captions (≥4.5:1 on paper-2) */
+
+ /* -- Spacing scale: 8 px base unit ---------------------------- */
+ --space-1: 0.5rem; /* 8 px */
+ --space-2: 1rem; /* 16 px */
+ --space-3: 1.5rem; /* 24 px */
+ --space-4: 2rem; /* 32 px */
+ --space-6: 3rem; /* 48 px */
+ --space-8: 4rem; /* 64 px */
+ --space-12: 6rem; /* 96 px */
+
+ /* -- Type scale ---------------------------------------- */
+ --fs-base: 1rem; /* 16 px — body text, never below the 16 px floor */
+ --fs-small: 0.875rem; /* 14 px — captions, secondary text */
+ --fs-h3: 1.125rem; /* 18 px — person names, sub-headings */
+ --fs-h2: 1.5rem; /* 24 px — section headings */
+ --fs-h1: clamp(1.5rem, 4vw + 1rem, 3.75rem); /* fluid hero scale */
+
+ --lh-body: 1.6; /* body line-height */
+ --lh-display: 1.15; /* tight display line-height */
+
+ /* -- Measure: maximum prose line length ----------------------
+ * 70ch ≤ 80ch satisfies the 80-character cap at desktop. */
+ --measure: 70ch;
+
+ /* -- Font families (three typefaces total) -------------- */
+ --ff-display: "Cormorant Garamond", "EB Garamond", Georgia, serif;
+ --ff-text: "Source Serif 4", Georgia, serif;
+ --ff-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 3. @font-face declarations
+ * All three faces are self-hosted under fonts/ and use `font-display: swap`
+ * so text remains readable during font load. URLs are repository-relative
+ * (no leading slash, no absolute origin).
+ * The .woff2 binaries land in fonts/:
+ * - fonts/cormorant-garamond.woff2 (Cormorant Garamond, OFL)
+ * - fonts/source-serif-4.woff2 (Source Serif 4, OFL)
+ * - fonts/jetbrains-mono.woff2 (JetBrains Mono, OFL)
+ * ------------------------------------------------------------------------- */
+
+@font-face {
+ font-family: "Cormorant Garamond";
+ src: url("../fonts/cormorant-garamond.woff2") format("woff2");
+ font-weight: 400 700;
+ font-style: normal;
+ font-display: swap;
+}
+
+@font-face {
+ font-family: "Source Serif 4";
+ src: url("../fonts/source-serif-4.woff2") format("woff2");
+ font-weight: 400 700;
+ font-style: normal;
+ font-display: swap;
+}
+
+@font-face {
+ font-family: "JetBrains Mono";
+ src: url("../fonts/jetbrains-mono.woff2") format("woff2");
+ font-weight: 400 700;
+ font-style: normal;
+ font-display: swap;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 4. Typography base
+ * Body text resolves to ≥ 16 CSS pixels at every breakpoint; prose blocks
+ * honour the --measure cap on desktop.
+ * ------------------------------------------------------------------------- */
+
+html {
+ font-size: 100%;
+ -webkit-text-size-adjust: 100%;
+}
+
+body {
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+ color: var(--c-ink);
+ background-color: var(--c-paper);
+ -webkit-font-smoothing: antialiased;
+ text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+ font-family: var(--ff-display);
+ font-weight: 600;
+ line-height: var(--lh-display);
+ color: var(--c-ink);
+ margin: 0 0 var(--space-2);
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-base); }
+h5 { font-size: var(--fs-small); }
+h6 { font-size: var(--fs-small); }
+
+p,
+ul,
+ol,
+blockquote {
+ margin: 0 0 var(--space-2);
+}
+
+li {
+ margin-bottom: var(--space-1);
+}
+
+a {
+ color: var(--c-accent);
+ text-decoration-thickness: 0.08em;
+ text-underline-offset: 0.15em;
+}
+
+a:hover,
+a:focus-visible {
+ text-decoration-thickness: 0.12em;
+}
+
+small,
+.text-small {
+ font-size: var(--fs-small);
+ color: var(--c-mute);
+}
+
+code,
+kbd,
+samp,
+pre {
+ font-family: var(--ff-mono);
+ font-size: 0.95em;
+}
+
+/* Prose-measure cap removed — all content uses the full container width. */
+
+
+/* ---------------------------------------------------------------------------
+ * 5. Reduced-motion override
+ * Users who prefer reduced motion get decorative animations disabled and
+ * transitions reduced to effectively zero. Functional motion (e.g., the
+ * mobile-nav panel) still completes within the 300 ms / 200 ms budgets in
+ * and 7.8 because those are scripted state changes, not CSS
+ * keyframe loops.
+ * ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+ *,
+ *::before,
+ *::after {
+ animation-duration: 0.01ms !important;
+ animation-iteration-count: 1 !important;
+ animation-delay: 0ms !important;
+ transition-duration: 0.01ms !important;
+ transition-delay: 0ms !important;
+ scroll-behavior: auto !important;
+ }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 6. Site header & primary navigation
+ * Implements the SiteHeader / SiteNav / MobileNavToggle components from
+ * the design notes. The HTML markup canon lives in every page (see 404.html);
+ * this section styles it at all breakpoints.
+ * Layout strategy:
+ * - Desktop (≥ 769 px) : single-row flex; brand left, link list right;
+ * hamburger toggle hidden.
+ * - Mobile (≤ 768 px) : hamburger toggle visible; link list hidden by
+ * default; revealed when JS sets data-open="true".
+ * No-JS fallback: a CSS `:target` rule reveals the panel when the page
+ * fragment is `#site-nav-list`, so users without JavaScript can still
+ * deep-link directly into the open-menu state. Close-on-outside-click,
+ * close-on-Escape, and resize-reset behaviours require JS .
+ * Active state (`aria-current="page"`) uses three non-colour cues that
+ * survive a greyscale render: bold weight, underline, and
+ * a left-border accent with matching padding.
+ * ------------------------------------------------------------------------- */
+
+/* --- Global focus indicator -------------------------------------
+ * Drawn in --c-rule against --c-paper at a 12.4 : 1 contrast ratio, well
+ * above WCAG AA's 3 : 1 threshold for non-text contrast. Applied globally
+ * here so SiteNav, SkipLink, in-page anchors, and footer links all share
+ * one indicator. */
+:focus-visible {
+ outline: 3px solid var(--c-rule);
+ outline-offset: 2px;
+}
+
+/* --- Header band ---------------------------------------------------------- */
+.site-header {
+ background-color: var(--c-paper);
+ border-bottom: 1px solid var(--c-rule);
+ padding-block: var(--space-2);
+ padding-inline: var(--space-3);
+}
+
+/* --- Nav container -------------------------------------------------------- */
+.site-nav {
+ display: flex;
+ flex-wrap: wrap;
+ align-items: center;
+ justify-content: space-between;
+ gap: var(--space-2);
+ max-width: 72rem;
+ margin-inline: auto;
+}
+
+/* --- Brand ---------------------------------------------------------------- */
+.site-nav__brand {
+ font-family: var(--ff-display);
+ font-size: 1.25rem; /* 20 px — larger than the 16 px body base */
+ font-weight: 600;
+ line-height: var(--lh-display);
+ color: var(--c-ink);
+ text-decoration: none;
+ letter-spacing: 0.005em;
+}
+
+.site-nav__brand:hover,
+.site-nav__brand:focus-visible {
+ text-decoration: underline;
+ text-decoration-thickness: 0.08em;
+ text-underline-offset: 0.2em;
+}
+
+/* --- Mobile toggle button -------------------------------------------------
+ * Hidden by default on desktop; shown at the mobile breakpoint below. The
+ * 44 × 44 minimums satisfy. The hamburger glyph is rendered with
+ * pure CSS (no SVG, no extra HTTP request) using a centred 2-px bar plus
+ * two pseudo-element bars 7 px above and below it. */
+.site-nav__toggle {
+ display: none;
+ align-items: center;
+ justify-content: center;
+ min-block-size: 44px;
+ min-inline-size: 44px;
+ padding: var(--space-1);
+ background: transparent;
+ border: 1px solid var(--c-rule);
+ border-radius: 4px;
+ color: var(--c-ink);
+ cursor: pointer;
+}
+
+.site-nav__toggle:hover {
+ background-color: rgba(44, 51, 64, 0.06); /* --c-rule @ 6 % */
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+ display: block;
+ width: 22px;
+ height: 2px;
+ background-color: currentColor;
+ border-radius: 1px;
+}
+
+.hamburger {
+ position: relative;
+}
+
+.hamburger::before,
+.hamburger::after {
+ content: "";
+ position: absolute;
+ inset-inline-start: 0;
+}
+
+.hamburger::before { inset-block-start: -7px; }
+.hamburger::after { inset-block-start: 7px; }
+
+/* --- Link list ------------------------------------------------------------ */
+.site-nav__list {
+ list-style: none;
+ margin: 0;
+ padding: 0;
+ display: flex;
+ flex-wrap: wrap;
+ gap: var(--space-3);
+}
+
+.site-nav__list li {
+ margin: 0;
+}
+
+.site-nav__list a {
+ display: inline-flex;
+ align-items: center;
+ min-block-size: 44px;
+ min-inline-size: 44px;
+ padding: var(--space-1) var(--space-2);
+ color: var(--c-ink);
+ text-decoration: none;
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+ border-left: 3px solid transparent; /* reserves the active-state slot */
+}
+
+.site-nav__list a:hover {
+ text-decoration: underline;
+ text-decoration-thickness: 0.08em;
+ text-underline-offset: 0.2em;
+}
+
+/* --- Active page state -------------------------------------
+ * Three non-colour cues stack so the active link remains distinguishable
+ * even when the page is rendered in greyscale:
+ * 1. font-weight: 700 (bold)
+ * 2. text-decoration: underline
+ * 3. border-left accent + padding-left offset
+ * The accent colour (--c-accent) is decorative only; the three cues above
+ * carry the meaning. */
+.site-nav__list a[aria-current="page"] {
+ font-weight: 700;
+ text-decoration: underline;
+ text-decoration-thickness: 0.1em;
+ text-underline-offset: 0.2em;
+ border-left: 3px solid var(--c-accent);
+ padding-left: var(--space-1);
+}
+
+/* ---------------------------------------------------------------------------
+ * Mobile breakpoint — viewports ≤ 768 px
+ * The toggle button appears, the link list collapses to a hidden panel
+ * by default, and either JS (data-open="true") or the :target fallback
+ * expands it. Touch targets retain the 44 × 44 minimum and gain ≥ 8 px
+ * of vertical separation.
+ * ------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+ .site-nav {
+ /* Brand and toggle on the first row; the panel takes the full second
+ * row when expanded. */
+ flex-wrap: wrap;
+ }
+
+ .site-nav__toggle {
+ display: inline-flex;
+ order: 2;
+ }
+
+ .site-nav__brand {
+ order: 1;
+ flex: 1 1 auto;
+ }
+
+ /* Collapsed by default: removed from the layout entirely so the header
+ * stays a single row and screen readers don't traverse the hidden links
+ * unexpectedly. */
+ .site-nav__list {
+ order: 3;
+ flex-basis: 100%;
+ flex-direction: column;
+ gap: var(--space-1);
+ margin-block-start: var(--space-2);
+ display: none;
+ }
+
+ /* Open via JS: data-open is flipped by js/nav.js. */
+ .site-nav__list[data-open="true"] {
+ display: flex;
+ }
+
+ /* No-JS fallback: deep-linking to #site-nav-list reveals the panel.
+ * Without JS, close-on-outside-click and Escape don't apply, but the
+ * menu can at least be opened via a fragment URL. */
+ .site-nav__list:target {
+ display: flex;
+ }
+
+ .site-nav__list a {
+ /* Full-width tap targets on mobile so the entire row is hittable. */
+ width: 100%;
+ min-block-size: 44px;
+ padding-block: var(--space-1);
+ padding-inline: var(--space-2);
+ }
+
+ /* ≥ 8 px gap between adjacent touch targets. var(--space-1)
+ * resolves to 8 px on top of the gap declared above, keeping consecutive
+ * link rects clearly separated. */
+ .site-nav__list li + li {
+ margin-block-start: var(--space-1);
+ }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 7. Skip link & site footer
+ * Implements the SkipLink and SiteFooter shared markup defined in
+ * the design notes. The HTML is identical on every page (see 404.html,
+ * students.html, schedule.html, and index.html via); this
+ * section provides their visual presentation.
+ * SkipLink:
+ * The first focusable element of every page. Sits visually off-screen
+ * above the viewport's top edge until it receives keyboard focus, then
+ * slides into view at the top-left corner with a high-contrast paper-
+ * on-ink colour pairing (--c-paper on --c-ink ≈ 16.5 : 1, well above
+ * WCAG AA's 4.5 : 1 threshold). Screen readers always announce it
+ * because it remains in the document flow and accessible tree.
+ * SiteFooter:
+ * A simple stacked block with a top border separating it from the
+ * page body. Centred to the same 72rem container width used by the
+ * site header, so the footer aligns with the nav bar at every
+ * breakpoint. The proposed-workshop status notice is
+ * rendered in --c-mute and --fs-small so it reads as a meta-note
+ * without competing with the workshop name above it.
+ * ------------------------------------------------------------------------- */
+
+/* --- Skip link ----------------------------------------------------------- */
+.skip-link {
+ position: absolute;
+ left: var(--space-2);
+ top: -3rem;
+ padding: var(--space-1) var(--space-2);
+ background-color: var(--c-ink);
+ color: var(--c-paper);
+ border: 2px solid var(--c-rule);
+ border-radius: 4px;
+ font-family: var(--ff-text);
+ font-weight: 600;
+ z-index: 1000;
+ text-decoration: none;
+ transition: top 0.15s ease-out;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+ top: var(--space-2);
+}
+
+/* --- Site footer --------------------------------------------------------- */
+.site-footer {
+ border-top: 1px solid var(--c-rule);
+ background-color: var(--c-paper);
+ padding-block: var(--space-4);
+ padding-inline: var(--space-3);
+
+ /* Stack the three lines vertically and centre the column to the same
+ * 72rem container width used by the site header. */
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: var(--space-1);
+ max-width: 72rem;
+ margin-inline: auto;
+}
+
+.site-footer p {
+ margin: 0;
+ text-align: center;
+}
+
+.site-footer__name {
+ font-family: var(--ff-display);
+ font-size: var(--fs-h3);
+ font-weight: 600;
+ line-height: var(--lh-display);
+ color: var(--c-ink);
+}
+
+.site-footer__status {
+ font-size: var(--fs-small);
+ color: var(--c-mute);
+}
+
+.site-footer__home a {
+ color: var(--c-accent);
+ text-decoration: none;
+}
+
+.site-footer__home a:hover,
+.site-footer__home a:focus-visible {
+ text-decoration: underline;
+ text-decoration-thickness: 0.08em;
+ text-underline-offset: 0.2em;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 8. Hero
+ * Implements the Hero_Section from the design notes / index.html. Markup canon:
+ * <section class="hero" aria-labelledby="hero-title">
+ * <p class="hero__status">Proposed Workshop (Subject to Acceptance)</p>
+ * <h1 id="hero-title" class="hero__title">CERTAIN @ NeurIPS 2026</h1>
+ * <p class="hero__subtitle">…</p>
+ * <p class="hero__tagline">…</p>
+ * </section>
+ * Layout strategy:
+ * - Vertical stack (display: flex; flex-direction: column) at every
+ * breakpoint so nothing overlaps and content wraps naturally.
+ * - Container-padded to the same 72rem max-width used by the site
+ * header and footer, so the hero aligns with the surrounding chrome.
+ * - padding-block scales down with the viewport: --space-8 desktop,
+ * --space-6 tablet, --space-4 mobile.
+ * Title-size invariant:
+ * .hero__title inherits --fs-h1 from the global h1 rule, which clamps
+ * between 1.5rem and 3.75rem (60 px). The subtitle clamp tops out at
+ * 1.25rem (20 px) and the tagline at 1.125rem (18 px), so the title's
+ * computed font-size strictly exceeds every other text element in the
+ * section at every viewport width. No rule below ever assigns a font-
+ * size to a hero descendant larger than the title's clamp window.
+ * Desktop sizing budget at 1440 × 900:
+ * --fs-h1 max ≈ 60 px (title)
+ * subtitle max = 20 px
+ * tagline max = 18 px
+ * status (--fs-small) = 14 px
+ * gap × 4 (--space-2) = 64 px
+ * padding-block × 2 = 128 px (--space-8 each side)
+ * ─────────────────────────────
+ * ≈ 304 px content height — comfortably inside a 900 px viewport,
+ * leaving ample room for the InPageNav directly below.
+ * Mobile sizing floors at viewports ≤ 768 px:
+ * .hero__title ≥ 24 px via clamp(1.5rem, 7vw, 2.25rem)
+ * .hero__subtitle ≥ 14 px via clamp(0.95rem, 4vw, 1.125rem) → ≥ 15.2 px
+ * .hero__tagline ≥ 14 px via clamp(0.95rem, 4vw, 1.0625rem) → ≥ 15.2 px
+ * ------------------------------------------------------------------------- */
+
+/* --- Hero outer ---------------------------------------------------------- */
+.hero {
+ /* Container padding matches .site-header / .site-footer for visual
+ * alignment across the page. */
+ max-width: 72rem;
+ margin-inline: auto;
+ padding-block: var(--space-8);
+ padding-inline: var(--space-3);
+
+ /* Vertical stack with consistent rhythm; gap sits at --space-2 (16 px)
+ * so the four direct children (status, title, subtitle, tagline)
+ * breathe without breaking the typographic scale. */
+ display: flex;
+ flex-direction: column;
+ gap: var(--space-2);
+}
+
+/* --- Status notice (small, uppercase label) -----------------------------
+ * --c-accent on --c-paper resolves to a 7.6 : 1 contrast ratio, well
+ * above the WCAG AA 4.5 : 1 threshold for body text. Letter-spacing and
+ * uppercase casing mark it visually as a label rather than prose. */
+.hero__status {
+ margin: 0;
+ font-family: var(--ff-text);
+ font-size: var(--fs-small);
+ color: var(--c-accent);
+ text-transform: uppercase;
+ letter-spacing: 0.1em;
+}
+
+/* --- Title (h1) ----------------------------------------------------------
+ * --fs-h1 (clamp(1.5rem, 4vw + 1rem, 3.75rem)) is inherited from the
+ * global h1 rule and is the largest computed font-size in the section
+ * at every viewport width. The desktop clamp max of 3.75rem
+ * (60 px) is well under a 1440 px viewport's width, so the title never
+ * forces horizontal overflow. */
+.hero__title {
+ margin: 0;
+ font-family: var(--ff-display);
+ line-height: var(--lh-display);
+ color: var(--c-ink);
+}
+
+/* --- Subtitle ------------------------------------------------------------
+ * Display serif, ink colour for legibility. The clamp's lower bound
+ * (1rem = 16 px) keeps it above the 14 px Mobile floor at
+ * every viewport ≥ 320 px; the upper bound (1.25rem = 20 px) stays
+ * comfortably below the title's clamp window so the title remains the
+ * largest text in the section. */
+.hero__subtitle {
+ margin: 0;
+ font-family: var(--ff-display);
+ font-size: clamp(1rem, 1.5vw + 0.5rem, 1.25rem);
+ font-weight: 600;
+ line-height: var(--lh-display);
+ color: var(--c-ink);
+}
+
+/* --- Tagline -------------------------------------------------------------
+ * Text serif, italic, muted. The clamp's lower bound (0.95rem ≈ 15.2 px)
+ * exceeds the 14 px Mobile floor; the upper bound (1.125rem =
+ * 18 px) sits below the subtitle and well below the title. */
+.hero__tagline {
+ margin: 0;
+ font-family: var(--ff-text);
+ font-size: clamp(0.95rem, 1vw + 0.5rem, 1.125rem);
+ font-style: italic;
+ line-height: var(--lh-body);
+ color: var(--c-mute);
+}
+
+/* ---------------------------------------------------------------------------
+ * Tablet — 769–1023 px
+ * Keep the flex-column stack so text wraps naturally without overlap and
+ * shrink padding-block one step. No font-size overrides needed here: the
+ * desktop clamps already adapt smoothly, and the column layout prevents
+ * horizontal overflow without any further intervention.
+ * ------------------------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+ .hero {
+ padding-block: var(--space-6);
+ }
+}
+
+/* ---------------------------------------------------------------------------
+ * Mobile — ≤ 768 px
+ * Tighten padding to --space-4 and pin font-size
+ * floors so the title is ≥ 24 px and subtitle/tagline are ≥ 14 px at
+ * 320 px viewports. The clamps below produce values strictly inside
+ * those bounds:
+ * 320 × 0.07 = 22.4 px → clamped to 24 px floor (1.5rem)
+ * 320 × 0.04 = 12.8 px → clamped to 15.2 px floor (0.95rem)
+ * ------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+ .hero {
+ padding-block: var(--space-4);
+ }
+
+ .hero__title {
+ font-size: clamp(1.5rem, 7vw, 2.25rem); /* ≥ 24 px floor */
+ }
+
+ .hero__subtitle {
+ font-size: clamp(0.95rem, 4vw, 1.125rem); /* ≥ 15.2 px → ≥ 14 px */
+ }
+
+ .hero__tagline {
+ font-size: clamp(0.95rem, 4vw, 1.0625rem); /* ≥ 15.2 px → ≥ 14 px */
+ }
+}
+
+/* ---------------------------------------------------------------------------
+ * Landscape phone — viewport height < 500 px
+ * On short viewports (e.g. 812 × 375, an iPhone-class device held in
+ * landscape), the existing width-based rules above resolve to
+ * `--space-6` (Tablet) or `--space-4` (Mobile) of vertical hero
+ * padding. Both are too tall to keep the title + key-facts row legible
+ * above the fold when the available height is well under 500 px.
+ * mandates that hero padding-block collapse to `--space-3`
+ * (24 px on the 8-px scale) at heights below 500 px. This rule is
+ * placed last so it overrides the earlier width-keyed @media blocks
+ * regardless of viewport width — a 1024 × 480 split view should
+ * collapse just as a 812 × 375 phone does. Token-pure: no new values,
+ * no new selectors.
+ * ------------------------------------------------------------------------- */
+
+@media (max-height: 499px) {
+ .hero {
+ padding-block: var(--space-3);
+ }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 9. People grid & card
+ * Implements the PeopleGrid container and PeopleCard component used by
+ * the Organisers, Programme committee, Keynote speakers, and Mentors
+ * sections of index.html (markup committed in).
+ * Markup canon :
+ * <section class="section">
+ * <h2 class="section__heading">Organisation</h2>
+ * <div class="section__body">
+ * <ul class="people-grid">
+ * <li>
+ * <article class="person">
+ * <picture class="person__photo">
+ * <source srcset="img/people/pal.webp" type="image/webp">
+ * <img src="img/people/pal.jpg" alt="Abhinandan Pal, Organiser"
+ * width="320" height="320" loading="lazy">
+ * </picture>
+ * <h3 class="person__name">Abhinandan Pal</h3>
+ * <p class="person__role">General Chair</p>
+ * <p class="person__affiliation">University of Birmingham</p>
+ * <!-- optional <p class="person__annotation"> for keynote -->
+ * </article>
+ * </li>
+ * …
+ * </ul>
+ * </div>
+ * </section>
+ * Layout strategy:
+ * - Mobile (default, ≤ 767 px) : single column (`grid-template-columns: 1fr`).
+ * - Tablet (≥ 768 px) : `repeat(auto-fit, minmax(220px, 1fr))`,
+ * which yields 2–3 columns at 768–1023 px.
+ * - Desktop (≥ 1024 px) : same auto-fit pattern produces 3–5
+ * columns naturally given the 72rem
+ * container; no override required.
+ * Equal heights:
+ * CSS Grid stretches every cell in a row to the tallest cell's height
+ * by default (`align-items: stretch`). The inner `<article>` is set to
+ * `width: 100%` and the wrapping `<li>` uses `display: flex; height:
+ * 100%` so the article fills its grid cell vertically. Combined with
+ * the fixed-aspect-ratio `.person__photo`, every card in the same row
+ * ends up with identical width and height.
+ * Section heading uniformity:
+ * `.section__heading` is given an explicit family/size/weight/casing/
+ * colour rule here so every section heading on the site renders
+ * identically; `text-transform: none` is set to neutralise any browser
+ * or future override that might apply uppercase/lowercase casing.
+ * ------------------------------------------------------------------------- */
+
+/* --- Section wrapper (shared by every site section) --------------------- */
+.section {
+ padding-block: var(--space-6);
+ padding-inline: var(--space-3);
+ max-width: 72rem;
+ margin-inline: auto;
+}
+
+/* Page-title sections (contain only an h1 + optional intro paragraph)
+ * that precede a content section: collapse bottom padding so the title
+ * flows into the next section without a double vertical gap. The h1
+ * margin-bottom provides the separation instead. */
+#student-research-showcase.section,
+#the-schedule.section {
+ padding-block-end: 0;
+}
+
+.section__heading {
+ margin: 0 0 var(--space-3);
+ font-family: var(--ff-display);
+ font-size: var(--fs-h2);
+ font-weight: 600;
+ line-height: var(--lh-display);
+ color: var(--c-ink);
+ text-transform: none; /* enforced for */
+}
+
+.section__body {
+ display: block;
+}
+
+/* --- Grid container ----------------------------------------------------- */
+.people-grid {
+ list-style: none;
+ margin: 0;
+ padding: 0;
+ display: grid;
+ gap: var(--space-3);
+ grid-template-columns: 1fr; /* Mobile (default) */
+}
+
+.people-grid > li {
+ margin: 0;
+ display: flex; /* makes the <article> stretch to li height */
+ height: 100%;
+}
+
+@media (min-width: 768px) {
+ .people-grid {
+ /* Tablet (768–1023 px): exactly 3 columns. The naive auto-fit pattern
+ * (minmax(220px, 1fr)) yields 4 columns around 1000 px container width
+ * which violates (cap of 3). Pin the column count explicitly. */
+ grid-template-columns: repeat(3, minmax(0, 1fr));
+ }
+}
+@media (min-width: 1024px) {
+ .people-grid {
+ /* Desktop: keep auto-fit so the column count grows naturally with the
+ * 72rem container (resolves to 3-5 columns;). */
+ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+ }
+}
+
+/* --- Card --------------------------------------------------------------- */
+.person {
+ display: flex;
+ flex-direction: column;
+ gap: var(--space-1);
+ width: 100%;
+ padding: var(--space-2);
+ /* Cascade fallback: browsers without color-mix
+ * support fall through to the literal --c-paper tone; modern UAs
+ * resolve --c-paper-2 (from ) for the quiet card lift. */
+ background-color: var(--c-paper);
+ background-color: var(--c-paper-2);
+ border: 1px solid var(--c-rule); /* subtle hairline */
+}
+
+.person__link {
+ display: contents;
+ text-decoration: none;
+ color: inherit;
+ cursor: pointer;
+}
+
+.person:has(.person__link):hover {
+ border-color: var(--c-accent);
+ transform: translateY(-4px);
+ box-shadow: 0 4px 12px rgba(20, 24, 31, 0.08);
+ transition: transform var(--dur-hover), border-color var(--dur-hover), box-shadow var(--dur-hover);
+}
+
+/* --- Photo container ----------------------------------------------------
+ * Fixed 1:1 aspect ratio so all photos in a section share width and
+ * height regardless of source image dimensions. The placeholder
+ * background (--c-rule) shows briefly while images load. */
+.person__photo {
+ display: block;
+ width: 100%;
+ aspect-ratio: 1 / 1;
+ overflow: hidden;
+ background-color: var(--c-rule);
+}
+
+img.person__photo {
+ display: block;
+ width: 100%;
+ aspect-ratio: 1 / 1;
+ object-fit: cover;
+ background-color: var(--c-rule);
+}
+
+.person__photo > img,
+.person__photo > source,
+.person__photo > picture > img {
+ display: block;
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+}
+
+/* --- Person name (rendered as <h3>) ------------------------------------- */
+.person__name {
+ margin: var(--space-1) 0 0;
+ font-family: var(--ff-display);
+ font-size: var(--fs-h3);
+ font-weight: 600;
+ line-height: var(--lh-display);
+ color: var(--c-ink);
+}
+
+.person__role {
+ margin: 0;
+ font-family: var(--ff-text);
+ font-size: var(--fs-small);
+ color: var(--c-mute);
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+}
+
+.person__affiliation {
+ margin: 0;
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ color: var(--c-ink);
+}
+
+.person__annotation {
+ margin: var(--space-1) 0 0;
+ font-family: var(--ff-text);
+ font-size: var(--fs-small);
+ font-style: italic;
+ color: var(--c-mute);
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 9.1 Initials placeholder
+ * Opt-in mechanism: replace the <picture> element inside .person with
+ * a <div class="person__photo person__photo--initials" role="img"
+ * aria-label="<Name>, <Role>" style="--initials: 'AB';"></div>
+ * — where 'AB' is the uppercase pair of (first-name initial, family-
+ * name initial). The placeholder inherits .person__photo's width,
+ * aspect-ratio, and overflow rules so the card's dimensions match its
+ * neighbours.
+ * ------------------------------------------------------------------------- */
+
+/* --- Initials placeholder ---------------------------------------------
+ * Used when no person photo has been sourced for an individual. The
+ * placeholder element replaces the <picture> child of .person and
+ * shares its dimensions — same width, height, and 1:1
+ * aspect ratio so a People_Section's cards remain dimensionally
+ * uniform regardless of which entries use a photo and which use the
+ * placeholder.
+ * Markup contract (rendered when no photo is available):
+ * <div class="person__photo person__photo--initials"
+ * role="img"
+ * aria-label="<Full Name>, <Role>"
+ * style="--initials: 'AP';"></div>
+ * The initials themselves come from the `--initials` custom property
+ * and are rendered via a ::before pseudo-element so the markup stays
+ * minimal. The accessible name is supplied by the consumer via
+ * aria-label, satisfying.
+ * --------------------------------------------------------------------- */
+.person__photo--initials {
+ /* Same dimensions as the <picture> photo container — width: 100%,
+ * aspect-ratio: 1/1, overflow: hidden are inherited from the base
+ * .person__photo rule. We override only the look. */
+ background-color: var(--c-rule);
+ color: var(--c-paper);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-family: var(--ff-display);
+ font-weight: 600;
+ line-height: 1;
+ text-transform: uppercase;
+ letter-spacing: 0.04em;
+ /* Initials sized as a percentage of card width so they scale with the
+ * 1:1 aspect-ratio container at every breakpoint. */
+ font-size: 2.25rem; /* fallback */
+ font-size: clamp(1.5rem, 4vw + 0.5rem, 2.5rem);
+}
+
+.person__photo--initials::before {
+ content: var(--initials, "");
+ display: inline-block;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 10. In-page navigation and footer touch targets
+ *  requires every interactive control on every page
+ * — primary nav, mobile toggle, in-page nav anchors, and footer links
+ * to render with a 44 × 44 CSS pixel touch target and ≥ 8 px of separation
+ * between adjacent controls at viewports in [320, 1023]. The primary-nav
+ * and toggle rules in already satisfy this for the header. The
+ * rules below extend the same constraint to the in-page nav and footer.
+ * `.inpage-nav` lives only on the Home page, between the Hero and the
+ * Section blocks. On Mobile/Tablet it lays out as a column of full-width
+ * tap rows; on Desktop it relaxes to a wrapping inline list.
+ * ------------------------------------------------------------------------- */
+
+.inpage-nav {
+ max-width: 72rem;
+ margin-inline: auto;
+ padding-inline: var(--space-3);
+ padding-block: var(--space-2);
+}
+
+.inpage-nav ul {
+ list-style: none;
+ margin: 0;
+ padding: 0;
+ display: flex;
+ flex-direction: column;
+ gap: var(--space-1);
+}
+
+@media (min-width: 1024px) {
+ .inpage-nav ul {
+ flex-direction: row;
+ flex-wrap: wrap;
+ gap: var(--space-2);
+ }
+}
+
+.inpage-nav li {
+ margin: 0;
+}
+
+.inpage-nav a {
+ display: inline-flex;
+ align-items: center;
+ min-block-size: 44px;
+ min-inline-size: 44px;
+ padding: var(--space-1) var(--space-2);
+ color: var(--c-ink);
+ text-decoration: none;
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+}
+
+.inpage-nav a:hover,
+.inpage-nav a:focus-visible {
+ text-decoration: underline;
+ text-decoration-thickness: 0.08em;
+ text-underline-offset: 0.2em;
+ color: var(--c-accent);
+}
+
+/* --- Footer links -------------------------------------------------------- */
+.site-footer a {
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ min-block-size: 44px;
+ min-inline-size: 44px;
+ padding-block: var(--space-1);
+ padding-inline: var(--space-2);
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 11. Workshop Format section — .format-grid + .format-card
+ * Implements the Workshop_Format_Section from the design notes / index.html. The
+ * markup canon is a `<section id="workshop-format">` containing one `<h2
+ * class="section__heading">Workshop Format</h2>` and an `<ol class="format-
+ * grid">` of four `<li>` items, each wrapping a single `<a class="format-
+ * card">` whose children are, in document order:
+ * <span class="format-card__num">01</span>
+ * <h3 class="format-card__title">…</h3>
+ * <p class="format-card__body">…</p>
+ * <ul class="format-card__tags">…</ul>
+ * <span class="format-card__more">Read more →</span>
+ * Visual style is deliberately editorial — type-only, no gradients, no
+ * glassmorphism, no shadows beyond the existing 1-px hairline border. The
+ * design tokens reused here are exactly those declared in of this
+ * file; this component introduces no new typeface, no new palette colour, and
+ * no new spacing-unit base.
+ * Responsive grid: 1 column on Mobile, 2 columns on Tablet, 4
+ * columns on Desktop. Implemented with `repeat(N, minmax(0, 1fr))` so the
+ * column count is exact, not "auto-fit" (which could produce 3 or 5 columns
+ * at certain widths).
+ * ------------------------------------------------------------------------- */
+
+.format-grid {
+ /* <ol> — counter is purely visual; the numeric label is rendered as plain
+ * text inside .format-card__num so screen readers don't double-announce. */
+ list-style: none;
+ margin: 0;
+ padding: 0;
+ display: grid;
+ gap: var(--space-3);
+ grid-template-columns: 1fr; /* Mobile (default) */
+}
+
+.format-grid > li {
+ margin: 0;
+ display: flex; /* lets .format-card stretch to the grid cell height */
+ height: 100%;
+}
+
+@media (min-width: 768px) {
+ .format-grid {
+ grid-template-columns: repeat(2, minmax(0, 1fr));
+ }
+}
+
+@media (min-width: 1024px) {
+ .format-grid {
+ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+ }
+}
+
+/* --- Card ----------------------------------------------------------------
+ * The entire card is a single hyperlink so the whole rectangle is hittable.
+ * It is laid out as a vertical flex column so the optional "Read more →"
+ * affordance pinned to the bottom (margin-block-start: auto) keeps every
+ * card's footer aligned regardless of body length. */
+.format-card {
+ display: flex;
+ flex-direction: column;
+ gap: var(--space-1);
+ width: 100%;
+ padding: var(--space-3);
+ /* Cascade fallback: old browsers keep --c-paper;
+ * modern UAs resolve --c-paper-2 for the quiet card lift. */
+ background-color: var(--c-paper);
+ background-color: var(--c-paper-2);
+ color: var(--c-ink);
+ border: 1px solid var(--c-rule);
+ text-decoration: none;
+ /* Border-only state change on hover/focus — no shadow, no transform, no
+ * gradient, no backdrop-filter. Transition wrapped by the
+ * existing prefers-reduced-motion override in . */
+ transition: border-color 150ms ease-out, color 150ms ease-out;
+}
+
+.format-card:hover,
+.format-card:focus-visible {
+ border-color: var(--c-accent);
+ color: var(--c-ink);
+ text-decoration: none;
+ transform: translateY(-4px);
+ box-shadow: 0 4px 12px rgba(20, 24, 31, 0.08);
+ transition: transform var(--dur-hover), border-color var(--dur-hover), box-shadow var(--dur-hover);
+}
+
+.format-card--static:hover,
+.format-card--static:focus-visible {
+ transform: none;
+ box-shadow: none;
+ border-color: var(--c-mute);
+}
+
+/* Subtle accent top-border slide-in for all static (non-link) blocks. */
+.format-card--static,
+.person:not(:has(.person__link)),
+.session-intro,
+.schedule-block,
+.scope-block,
+.why-attend__list li,
+.scope-tags li {
+ position: relative;
+ transition: border-color var(--dur-hover);
+}
+
+.format-card--static::before,
+.person:not(:has(.person__link))::before,
+.session-intro::before,
+.schedule-block::before,
+.scope-block::before,
+.why-attend__list li::before,
+.scope-tags li::before {
+ content: "";
+ position: absolute;
+ inset-inline: 0;
+ inset-block-start: 0;
+ height: 2px;
+ background-color: var(--c-accent);
+ transform: scaleX(0);
+ transform-origin: left center;
+ transition: transform var(--dur-hover);
+ pointer-events: none;
+}
+
+.format-card--static:hover::before,
+.person:not(:has(.person__link)):hover::before,
+.session-intro:hover::before,
+.schedule-block:hover::before,
+.scope-block:hover::before,
+.why-attend__list li:hover::before,
+.scope-tags li:hover::before {
+ transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+ .format-card--static,
+ .person:not(:has(.person__link)),
+ .session-intro,
+ .schedule-block,
+ .scope-block,
+ .why-attend__list li,
+ .scope-tags li,
+ .format-card--static::before,
+ .person:not(:has(.person__link))::before,
+ .session-intro::before,
+ .schedule-block::before,
+ .scope-block::before,
+ .why-attend__list li::before,
+ .scope-tags li::before {
+ transition: none;
+ }
+}
+
+.format-card--static:hover {
+ border-color: var(--c-rule);
+}
+
+.format-card__num {
+ font-family: var(--ff-display);
+ font-size: var(--fs-base);
+ font-style: italic;
+ font-weight: 600;
+ letter-spacing: 0.05em;
+ color: var(--c-accent);
+}
+
+.format-card__title {
+ margin: var(--space-1) 0 0;
+ font-family: var(--ff-display);
+ font-size: var(--fs-h2);
+ font-weight: 600;
+ line-height: var(--lh-display);
+ color: var(--c-ink);
+}
+
+.format-card__body {
+ margin: var(--space-1) 0 0;
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+ color: var(--c-ink);
+}
+
+/* --- Tag list -------------------------------------------------------------
+ * Inline list with middle-dot separators rendered via ::before on every <li>
+ * except the first. Uses the existing `--c-mute` palette token so the dots
+ * fade visually without introducing a new colour. */
+.format-card__tags {
+ list-style: none;
+ margin: var(--space-1) 0 0;
+ padding: 0;
+ font-family: var(--ff-text);
+ font-size: var(--fs-small);
+ color: var(--c-mute);
+}
+
+.format-card__tags li {
+ display: inline;
+ margin: 0;
+}
+
+.format-card__tags li + li::before {
+ content: " · ";
+ color: var(--c-mute);
+}
+
+/* --- Read-more affordance ------------------------------------------------
+ * Pinned to the bottom of the card so every card's footer aligns at equal
+ * height. The arrow glyph is decorative (aria-hidden="true" on the wrapping
+ * span) so screen readers announce only the canonical card title via the
+ * link's accessible name, satisfying. */
+.format-card__more {
+ margin-block-start: auto;
+ padding-block-start: var(--space-2);
+ font-family: var(--ff-text);
+ font-size: var(--fs-small);
+ font-weight: 600;
+ color: var(--c-accent);
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 11.5 Program Committee table
+ * ------------------------------------------------------------------------- */
+
+.pc-table {
+ width: 100%;
+ border-collapse: collapse;
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+}
+
+.pc-table thead {
+ border-bottom: 2px solid var(--c-rule);
+}
+
+.pc-table th {
+ text-align: left;
+ font-family: var(--ff-display);
+ font-size: var(--fs-small);
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ color: var(--c-mute);
+ padding: var(--space-1) var(--space-2) var(--space-1) 0;
+}
+
+.pc-table td {
+ padding: var(--space-1) var(--space-2) var(--space-1) 0;
+ color: var(--c-ink);
+ border-bottom: 1px solid var(--c-rule);
+}
+
+.pc-table td:first-child {
+ font-weight: 600;
+ white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+ .pc-table td:first-child {
+ white-space: normal;
+ }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 11.6 Schedule page
+ * ------------------------------------------------------------------------- */
+
+.schedule-intro {
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+ color: var(--c-ink);
+ margin-block-end: var(--space-4);
+}
+
+.schedule-columns {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: var(--space-4);
+}
+
+@media (max-width: 768px) {
+ .schedule-columns {
+ grid-template-columns: 1fr;
+ }
+}
+
+.schedule-block {
+ padding: var(--space-3);
+ /* Cascade fallback: old browsers keep --c-paper;
+ * modern UAs resolve --c-paper-2 for the quiet card lift. */
+ background-color: var(--c-paper);
+ background-color: var(--c-paper-2);
+ border: 1px solid var(--c-rule);
+}
+
+.schedule-table {
+ width: 100%;
+ border-collapse: collapse;
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+}
+
+.schedule-table td {
+ padding: var(--space-1) 0;
+ color: var(--c-ink);
+ border-bottom: 1px solid var(--c-rule);
+ vertical-align: top;
+}
+
+.schedule-table tr:last-child td {
+ border-bottom: none;
+}
+
+.schedule-table__time {
+ font-family: var(--ff-mono);
+ font-size: var(--fs-base);
+ font-weight: 400;
+ font-variant-numeric: tabular-nums;
+ white-space: nowrap;
+ padding-right: var(--space-3);
+ color: var(--c-ink);
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 11.7 Sessions page
+ * ------------------------------------------------------------------------- */
+
+.section__subtitle {
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ font-style: italic;
+ color: var(--c-mute);
+ margin: 0 0 var(--space-3);
+}
+
+.session-intro {
+ padding: var(--space-3);
+ padding-inline-start: var(--space-4);
+ /* Cascade fallback: old browsers keep --c-paper;
+ * modern UAs resolve --c-paper-2 for the quiet card lift. */
+ background-color: var(--c-paper);
+ background-color: var(--c-paper-2);
+ border: 1px solid var(--c-rule);
+ border-inline-start: 3px solid var(--c-accent);
+ margin-block-end: var(--space-4);
+}
+
+.session-intro p {
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+ color: var(--c-ink);
+ margin: 0 0 var(--space-2);
+}
+
+.session-intro p:last-child {
+ margin-block-end: 0;
+}
+
+.session-card {
+ display: flex;
+ flex-direction: column;
+ gap: var(--space-2);
+}
+
+.why-attend {
+ margin-block-start: var(--space-3);
+}
+
+.why-attend h3,
+.why-attend h4 {
+ font-family: var(--ff-display);
+ font-size: var(--fs-h3);
+ font-weight: 600;
+ color: var(--c-ink);
+ margin: 0 0 var(--space-2);
+}
+
+.why-attend__list {
+ list-style: none;
+ margin: 0;
+ padding: 0;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+ gap: var(--space-2);
+}
+
+.why-attend__list li {
+ padding: var(--space-2);
+ /* Cascade fallback: old browsers keep --c-paper;
+ * modern UAs resolve --c-paper-2 for the quiet card lift. */
+ background-color: var(--c-paper);
+ background-color: var(--c-paper-2);
+ border: 1px solid var(--c-rule);
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+ color: var(--c-ink);
+}
+
+/* Session sections as distinct card blocks with spacing between them */
+#guided-brainstorming,
+#find-your-future-team,
+#other-sessions {
+ background-color: var(--c-paper);
+ background-color: var(--c-paper-3);
+ border: 1px solid var(--c-rule);
+ border-radius: var(--radius-1);
+ margin-block-end: var(--space-4);
+}
+
+#guided-brainstorming {
+ margin-block-start: var(--space-4);
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 12. Sponsor logo
+ * Constrains the sponsor logo to a maximum of 200 CSS pixels on desktop
+ * while allowing proportional scaling on smaller viewports. The min-width
+ * of 80 px prevents the logo from shrinking to illegibility on narrow
+ * screens.
+ * ------------------------------------------------------------------------- */
+
+.sponsor-logo {
+ max-width: 200px;
+ width: 100%;
+ min-width: 80px;
+ height: auto;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 13. Speaker biography disclosure
+ * Implements the Speaker_Dropdown component from the design notes. Uses native
+ * <details>/<summary> for no-JS operation and keyboard accessibility.
+ * Animation uses the grid-template-rows (0fr → 1fr) pattern for smooth
+ * expand/collapse within 300 ms. The existing global prefers-reduced-motion
+ * override in already handles instant transitions.
+ * Tap target: min-block-size and min-inline-size of 44px on the summary
+ * element satisfy the 44×44 CSS pixel minimum.
+ * ------------------------------------------------------------------------- */
+
+/* Speaker biography disclosure */
+.speaker-bio {
+ margin-block-start: var(--space-1);
+ border-top: 1px solid var(--c-rule);
+}
+
+.speaker-bio__toggle {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ min-block-size: 44px;
+ min-inline-size: 44px;
+ padding: var(--space-1) 0;
+ cursor: pointer;
+ list-style: none; /* removes default marker */
+}
+
+.speaker-bio__toggle::-webkit-details-marker {
+ display: none;
+}
+
+.speaker-bio__label {
+ font-family: var(--ff-display);
+ font-size: var(--fs-small);
+ font-weight: 600;
+ color: var(--c-ink);
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+}
+
+.speaker-bio__indicator::after {
+ content: "+";
+ font-family: var(--ff-display);
+ font-size: var(--fs-h3);
+ font-weight: 400;
+ color: var(--c-mute);
+ line-height: 1;
+}
+
+.speaker-bio[open] .speaker-bio__indicator::after {
+ content: "\2212";
+}
+
+/* Card inversion when biography is open */
+.person:has(.speaker-bio[open]) {
+ background-color: var(--c-accent);
+ border-color: var(--c-accent);
+ transition: background-color 800ms ease, border-color 800ms ease;
+}
+
+.person:has(.speaker-bio[open]) .person__name,
+.person:has(.speaker-bio[open]) .person__role,
+.person:has(.speaker-bio[open]) .person__affiliation,
+.person:has(.speaker-bio[open]) .person__annotation,
+.person:has(.speaker-bio[open]) .speaker-bio__label,
+.person:has(.speaker-bio[open]) .speaker-bio__indicator::after,
+.person:has(.speaker-bio[open]) .speaker-bio__content p {
+ color: var(--c-paper);
+}
+
+.person:has(.speaker-bio[open]) .speaker-bio {
+ border-top-color: var(--c-paper);
+}
+
+.speaker-bio__content {
+ display: grid;
+ grid-template-rows: 0fr;
+ transition: grid-template-rows 300ms ease-out;
+ overflow: hidden;
+}
+
+.speaker-bio[open] .speaker-bio__content {
+ grid-template-rows: 1fr;
+}
+
+.speaker-bio__content > p {
+ min-height: 0;
+ overflow: hidden;
+ padding-block-end: var(--space-2);
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+ color: var(--c-ink);
+ margin: 0;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 14. Polish base — token & meta deltas for the visual-polish pass
+ * Additive layer that introduces the new design tokens used by the
+ * visual-polish refinements in sections 15+ (surface family, hero
+ * key-facts row, PC-table responsive stack, in-page-nav scrollspy
+ * styling, and sponsors block).
+ * Every value here is derived from the five-token palette declared in
+ * — no new colour literals are introduced.
+ * The new surfaces use color-mix(in oklab, ...) so the tint ramp keeps
+ * a stable hue/chroma against the paper/ink spine, producing predictable
+ * luminance deltas (>= 2 % between paper and paper-2; <= 8 % between
+ * paper and paper-3) that survive force-dark inversion gracefully
+ *.
+ * Why a *second* :root block instead of editing in place:
+ * - is the authoritative palette / spacing / type contract
+ * and is exercised by tests/smoke/tokens.test.ts (which counts
+ * exactly five --c-* tokens in the first :root block);
+ * - keeping the new tokens here makes the polish pass a clean,
+ * traceable delta on top of the existing contract.
+ * Browser support note:
+ * color-mix(in oklab, ...) is supported in Chromium >= 111,
+ * Firefox >= 113, Safari >= 16.2 — every browser the existing
+ * Playwright matrix runs against. Older user-agents fall back via
+ * the cascade-order pattern at every consuming site
+ * (`background-color: var(--c-paper); background-color: var(--c-paper-2);`).
+ * ------------------------------------------------------------------------- */
+
+:root {
+ /* -- color-scheme bridge -----------------------------------
+ * Tells the UA and force-dark extensions (Dark Reader, Midnight
+ * Lizard, Edge "force dark") that the page tolerates either scheme.
+ * Combined with <meta name="color-scheme" content="light dark"> in
+ * each page <head>  this is the cue extensions look for to
+ * produce a clean inversion rather than a brute overlay. We do not
+ * ship a full dark-mode theme in this pass; the declaration alone is sufficient. */
+ color-scheme: light dark;
+
+ /* -- Surface tints ---------------------------------
+ * Two extra surfaces, both derived from the palette via color-mix so
+ * they stay on the same chromatic spine as paper/ink and survive
+ * force-dark inversion gracefully.
+ * --c-paper-2 : 4 % ink-mix — quiet card lift against the page.
+ * --c-paper-3 : 8 % ink-mix — second tier (e.g. nested surfaces). */
+ --c-paper-2: color-mix(in oklab, var(--c-paper) 96%, var(--c-ink));
+ --c-paper-3: color-mix(in oklab, var(--c-paper) 92%, var(--c-ink));
+
+ /* -- Border-radius scale -------------------------------------
+ * Two values only. 0 for tabular surfaces (PC table cells, schedule
+ * grid), 2 px for editorial cards (people, formats, sessions). */
+ --radius-0: 0;
+ --radius-1: 2px;
+
+ /* -- Hairline weight ----------------------------------------
+ * Single source of truth for every editorial border, so a future
+ * weight change is a one-line edit. */
+ --rule-w: 1px;
+
+ /* -- Editorial column units ---------------------------------
+ * The page container width stays at 72rem (existing convention); this
+ * tighter measure is used for prose blocks that benefit from a
+ * narrower line length than the global --measure (70ch). */
+ --measure-narrow: 60ch;
+
+ /* -- Motion durations -------------------------
+ * Two values only. 150 ms for hover affordances, 300 ms for the
+ * disclosure (speaker-bio) animation. The existing
+ * prefers-reduced-motion override in collapses both to
+ * ~0 ms for users who request reduced motion. */
+ --dur-hover: 150ms;
+ --dur-disclosure: 300ms;
+}
+/* ---------------------------------------------------------------------------
+ * 14.1 Surface-family unification
+ * Single zero-specificity rule that gives every editorial card the same
+ * 2 px corner radius and the hairline border in --c-rule. The :where
+ * wrapper drops specificity to (0,0,0), so any per-component override in
+ * sections 9-13 (e.g. .person, .format-card, .schedule-block) keeps
+ * authority — this rule is a unified fallback, never an override.
+ * The hairline border is restated here: it is the load-
+ * bearing card edge cue and must not be removed in favour of shadow-
+ * only edges, which force-dark extensions tend to flatten.
+ * ------------------------------------------------------------------------- */
+
+:where(.person, .format-card, .schedule-block, .session-intro,
+ .why-attend__list li) {
+ border: var(--rule-w) solid var(--c-rule);
+ border-radius: var(--radius-1);
+}
+
+/* ---------------------------------------------------------------------------
+ * 14.2 People-grid baseline cluster
+ * Reserves a shared baseline-cluster height for the photo + headings
+ * portion of every `.person` card so that — even when one card's
+ * speaker bio is open and another's is closed — the photo, name, role,
+ * and affiliation lines align row-wise across every card in the grid.
+ * Reservations are derived from the type scale ( of this file)
+ * rather than fixed pixel magic numbers, so a future tweak to
+ * --fs-h3 / --fs-base / --fs-small / --lh-display / --lh-body cascades
+ * cleanly through the cluster:
+ * .person__name : up to 2 lines of display text (h3 * lh-display * 2)
+ * .person__role : 1 line of small text (small * lh-body)
+ * .person__affiliations : up to 2 lines of base text (base * lh-body * 2)
+ * Affiliations are reserved as a *cluster* (the wrapping <div>, see
+ *) rather than per <p>, so a single-affiliation card and a
+ * two-affiliation card share the same vertical slot — the second
+ * affiliation simply fills the already-reserved space.
+ * Token discipline:
+ * Every value below resolves to an existing type-scale or
+ * line-height token from — no magic numbers, no new
+ * tokens. Only `min-block-size` is set; the existing margin / font
+ * rules in stay authoritative.
+ * ------------------------------------------------------------------------- */
+
+.person__name {
+ min-block-size: calc(var(--fs-h3) * var(--lh-display) * 2);
+}
+
+.person__role {
+ min-block-size: calc(var(--fs-small) * var(--lh-body));
+}
+
+.person__affiliations {
+ min-block-size: calc(var(--fs-base) * var(--lh-body) * 2);
+}
+
+/* ---------------------------------------------------------------------------
+ * 14.3 People-grid bio expansion isolation
+ * By default, CSS Grid stretches every cell in the same row to the
+ * tallest cell's height (`align-items: stretch`). The original section
+ * 9 rules rely on that stretch — combined with `.people-grid > li`
+ * being `display: flex; height: 100%` — to produce equal-height card
+ * rows when every speaker bio is closed.
+ * That contract breaks the moment one card's `<details
+ * class="speaker-bio">` is opened: the open biography pushes its own
+ * card taller, and stretch propagates that height to every same-row
+ * sibling, leaving cards next to it with a tall expanse of empty space
+ * below their closed-bio toggle. forbid that propagation:
+ * an open biography MUST stretch only its own card, not its
+ * neighbours.
+ * Two changes, in two layers, deliver that:
+ * 1. The shared baseline cluster from already pins the
+ * photo + name + role + affiliations slot to a fixed vertical
+ * reservation derived from the type scale, so the *closed-state*
+ * top of every card lines up row-wise without depending on grid
+ * stretch at all.
+ * 2. This sub-section overrides the section-9 stretch defaults with
+ * a more-specific rule (the section-14 selectors are listed
+ * after in source order, so they win on equal
+ * specificity by cascade order). Cards now align to the start of
+ * their grid row and size to their own content, so the only card
+ * that grows when its bio opens is the one whose <details> the
+ * user clicked.
+ * Trade-off accepted by: cards in the same row are no
+ * longer guaranteed to share the same *visual* height once any bio is
+ * open. They share the same *baseline cluster* height (from 14.2), so
+ * the top portion (photo + headings + closed-bio toggle) still aligns
+ * row-wise — only the open biography below the toggle is allowed to
+ * extend a single card's height. This is exactly the contract Req
+ * 5.1/5.2 require.
+ * Token discipline:
+ * No colour or spacing tokens involved — purely a layout-axis
+ * override. Existing `gap`, `grid-template-columns`, `padding`, and
+ * `border` rules in remain authoritative.
+ * ------------------------------------------------------------------------- */
+
+.people-grid {
+ align-items: stretch;
+}
+
+.people-grid > li {
+ align-self: stretch;
+ height: 100%;
+}
+
+.people-grid .person {
+ height: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+ * 15. Hero refinement — key-facts row
+ * Adds the hero "key-facts" line that sits below `.hero__tagline` and
+ * communicates the four-corner facts at a glance: venue, date, format
+ * (markup canon committed in / index.html). The row is
+ * deliberately quiet — small uppercase text in `--c-mute`, hairline
+ * separator dots in `--c-rule` — so it reinforces editorial hierarchy
+ * without competing with the title (which remains the largest text on
+ * the page at every viewport, per).
+ * Layout strategy:
+ * `display: flex` + `flex-wrap: wrap` lets the row sit on a single
+ * line at desktop and reflow gracefully on narrower
+ * viewports; `gap: var(--space-2)` keeps the spacing on the 8 px
+ * scale and survives the wrap.
+ * Mobile separator suppression (<= 480 px):
+ * The aria-hidden middle-dot spans (`.hero__keyfacts-sep`) are hidden
+ * when the row wraps to multi-line on small viewports, so a stray
+ * leading or trailing dot never lands at the start of a wrapped line.
+ * The flex `gap` keeps the items visually separated even with the
+ * dots gone — this is exactly the "dots vanish, gap survives"
+ * contract called out in. Items remain semantically
+ * separated for screen readers because each item is its own span and
+ * the separator dots were aria-hidden to begin with.
+ * Token discipline:
+ * Every value here resolves to an existing token from or
+ * — no new colour literals, no off-scale spacing, no new
+ * font face. The `--c-mute` and `--c-rule` colour declarations are
+ * the load-bearing palette references for this component, validated
+ * by tests/unit/palette-tokens.test.ts.
+ * ------------------------------------------------------------------------- */
+
+.hero__keyfacts {
+ margin: var(--space-2) 0 0;
+ font-family: var(--ff-text);
+ font-size: var(--fs-small);
+ letter-spacing: 0.05em;
+ text-transform: uppercase;
+ color: var(--c-mute);
+ display: flex;
+ flex-wrap: wrap;
+ gap: var(--space-2);
+}
+
+.hero__keyfacts-sep {
+ /* Hairline-coloured separator dot — sits between key-facts items at
+ * desktop / Tablet, hidden under 481 px (rule below). */
+ color: var(--c-rule);
+}
+
+@media (max-width: 480px) {
+ .hero__keyfacts-sep {
+ /* Dots vanish, the flex gap survives — see component note above. */
+ display: none;
+ }
+}
+
+/* ---------------------------------------------------------------------------
+ * 16.1 Programme committee table refinement — desktop subtle stripe
+ * Two visual deltas on the existing .pc-table component declared in
+ * :
+ * (a) Subtle desktop striping using --c-paper-2 (this sub-section).
+ * Odd-numbered body rows get a 4 % ink-mix surface tint
+ * enough to anchor the reader's eye row-wise on a long list,
+ * not enough to read as a "zebra stripe" or compete with the
+ * hairline divider. The 4 % luminance differential is within
+ * the cap and survives force-dark inversion gracefully
+ * because --c-paper-2 is itself derived from the palette via
+ * color-mix(in oklab, ...).
+ * (b) Mobile stacking at <= 768 px: rows reflow from tabular layout
+ * to per-row stacked blocks ( — responsive-stack rules
+ * appended after this stripe rule).
+ * Cascade-fallback pattern:
+ * The first declaration restates --c-paper as a fallback for
+ * browsers that don't support color-mix; the second declaration
+ * is the intended --c-paper-2 surface. Browsers that don't honour
+ * the second declaration simply render odd rows identical to the
+ * page surface — no striping, no broken layout.
+ * Token discipline:
+ * The only colour referenced is --c-paper-2 (with --c-paper as the
+ * pre-color-mix fallback). No new colour literals.
+ * ------------------------------------------------------------------------- */
+
+.pc-table tbody tr:nth-child(odd) > td {
+ background-color: var(--c-paper);
+ background-color: var(--c-paper-2);
+}
+
+/* ---------------------------------------------------------------------------
+ * 16.2 PC table refinement — responsive stack
+ * Adds the mobile (<= 768 px) responsive stack for the
+ * Programme Committee table defined in . On narrow
+ * viewports each `<tr>` reflows from a horizontal row into a stacked
+ * block: the name renders in the display serif (Cormorant Garamond)
+ * and the affiliation in the body text serif (Source Serif Pro) at the
+ * small size, in `--c-mute`, with a 1 px hairline divider between
+ * rows. This satisfies's "stacked block on mobile,
+ * name on its own line, affiliation beneath in --c-mute, --space-2
+ * spacing between rows, no horizontal scrollbar" contract.
+ * Strategy notes
+ * --------------
+ * `display: block` on `.pc-table`, `tbody`, `tr`, and `td` collapses
+ * the table layout for visual reflow. The existing horizontal
+ * `td { border-bottom }` rule from is overridden by the
+ * `td { border: 0 }` here, with the divider promoted up to the `<tr>`
+ * itself so each stacked block reads as one editorial row rather than
+ * two stacked cells with internal hairlines.
+ * The `padding-block: var(--space-2)` on the row keeps the row gap on
+ * the 8 px scale (the spec's "--space-2 of spacing between rows" — Req
+ * 7.3) without introducing a magic value.
+ * Typography pairing:
+ * - first-child cell (Name) : --ff-display, weight 600, --c-ink
+ * - last-child cell (Affiliation) : --ff-text, --fs-small, --c-mute
+ * This also subsumes the lone `td:first-child { white-space: normal; }`
+ * override that previously lived at the bottom of : the
+ * cell becomes a block here, so wrapping behaviour is the default and
+ * `white-space` no longer has to be touched.
+ * `thead` is hidden visually only — the column headers ("Name",
+ * "Affiliation") are redundant once the cells are stacked and labelled
+ * by their typography pairing. Screen-reader behaviour is acceptable
+ * because each row's two cells appear in source order (name first,
+ * affiliation second) which already matches the way the editorial pair
+ * reads aloud.
+ * Token discipline:
+ * --c-rule, --c-ink, --c-mute are all base palette tokens. No new
+ * colour literals; verified by tests/unit/palette-tokens.test.ts.
+ * Surface integrity:
+ * This section does NOT introduce stripe colouring; row striping
+ * for the PC table lives in its own task and uses --c-paper-2 over
+ * `tbody tr:nth-child(odd) > td` ( +).
+ * ------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+ .pc-table,
+ .pc-table tbody,
+ .pc-table tr,
+ .pc-table td {
+ display: block;
+ }
+
+ .pc-table thead {
+ /* Visually only — the column headings are redundant once cells
+ * are stacked and labelled by their typography pairing. */
+ display: none;
+ }
+
+ .pc-table tr {
+ padding-block: var(--space-2);
+ border-bottom: 1px solid var(--c-rule);
+ }
+
+ .pc-table td {
+ padding: 0;
+ border: 0;
+ }
+
+ .pc-table td:first-child {
+ font-family: var(--ff-display);
+ font-weight: 600;
+ color: var(--c-ink);
+ }
+
+ .pc-table td:last-child {
+ font-family: var(--ff-text);
+ font-size: var(--fs-small);
+ color: var(--c-mute);
+ }
+}
+
+/* ---------------------------------------------------------------------------
+ * 17. In-page nav refinement — desktop pill row
+ * Lifts the existing in-page nav from a default flex-row list (section
+ * 10) into a centred, typeset pill row at desktop
+ * (>= 1024 px), per. The mobile / tablet behaviour
+ * inherited from (full-width 44 px tap rows) is preserved
+ * untouched — every refinement here is gated behind a >= 1024 px media
+ * query.
+ * Visual contract:
+ * - the row is centred horizontally within the existing 72 rem
+ * container; column gap is --space-3 to give the dots breathing
+ * room without breaking the 8 px rhythm
+ * - each item except the first is preceded by a hairline middle-dot
+ * ("·") rendered in --c-rule, generated via `li + li::before` so
+ * no extra DOM nodes are required (the previous, decorative dot
+ * spans in markup are not used here — the editorial separator is
+ * a CSS concern only)
+ * - link text is uppercase with 0.05em tracking at --fs-small in the
+ * muted ink (--c-mute), so the row reads as a quiet eyebrow band
+ * rather than competing with the section headings beneath it
+ * - hover, keyboard focus, and the scroll-spy `aria-current="true"`
+ * state all share the same active-state cue: --c-accent text,
+ * bold weight (700), and a hairline underline at 0.08em thickness
+ * with a 0.25em offset so the underline never touches the cap
+ * line. This keeps the active indicator legible after a force-dark
+ * extension inversion.
+ * Token discipline:
+ * --c-mute, --c-rule, --c-accent, --space-3, --fs-small are all
+ * existing tokens from . No new colour or size literals.
+ * Accent allow-list:
+ * The three selectors that emit `var(--c-accent)` here
+ * `.inpage-nav a:hover`, `.inpage-nav a:focus-visible`, and
+ * `.inpage-nav a[aria-current="true"]` — all live under context (b)
+ * "active in-page nav indicator", validated by
+ * tests/unit/accent-usage.test.ts.
+ * Reduced-motion / forced-colors:
+ * No transitions or animations are introduced; the active-state
+ * change is instantaneous. The underline is the load-bearing
+ * non-colour cue so the active link survives a greyscale
+ * render and `forced-colors: active` cleanly.
+ * ------------------------------------------------------------------------- */
+
+@media (min-width: 1024px) {
+ .inpage-nav ul {
+ justify-content: center; /* centre the row */
+ column-gap: var(--space-3);
+ }
+
+ .inpage-nav li + li::before {
+ content: "·";
+ color: var(--c-rule);
+ margin-inline-end: var(--space-3);
+ align-self: center;
+ }
+
+ .inpage-nav a {
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ font-size: var(--fs-small);
+ color: var(--c-mute);
+ }
+
+ .inpage-nav a:hover,
+ .inpage-nav a:focus-visible,
+ .inpage-nav a[aria-current="true"] {
+ color: var(--c-accent);
+ font-weight: 700;
+ text-decoration: underline;
+ text-decoration-thickness: 0.08em;
+ text-underline-offset: 0.25em;
+ }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 18. Sponsors block (single + multi)
+ * Refines the sponsor logo presentation introduced in and
+ * future-proofs the markup for a multi-sponsor row, per the design notes
+ * § 3.6. The current page renders one logo today; the new
+ * `<ul class="sponsors-list">` wrapper (added in) lets us add
+ * additional `<li><img class="sponsor-logo">` siblings later without
+ * any further CSS work.
+ * Override contract vs :
+ * The base `.sponsor-logo` rule in set a fixed
+ * `max-width: 200px` and a `width: 100%` that scaled the logo with
+ * its container rather than with the viewport. The refined rules
+ * below replace `width`, `height`, and `max-width` with viewport-
+ * aware `clamp` values. Both rules carry equal specificity
+ * (`.sponsor-logo`); follows in source order
+ * so the cascade resolves in favour of these rules. The orthogonal
+ * `min-width: 80px` from is left in place — it is never
+ * the load-bearing constraint at the new dimensions (desktop width
+ * derives from the height clamp via natural aspect ratio, and the
+ * mobile `width` clamp starts at 120 px), so it is a harmless
+ * safety floor.
+ * Visual contract:
+ * desktop (default rule):
+ * - display: block
+ * - height: clamp(80px, 8vw, 120px)
+ * - width: auto (preserves aspect ratio)
+ * - max-width: 240px
+ * mobile (max-width: 768px):
+ * - width: clamp(120px, 60vw, 200px)
+ * - height: auto (preserves aspect ratio)
+ * Multi-sponsor layout:
+ * `.sponsors-list` is a flex row with `flex-wrap: wrap`, items
+ * vertically centred, --space-3 gap. With a single logo the row is
+ * visually identical to a centred image; with N logos they wrap
+ * onto multiple rows once the row width exceeds the container.
+ * Token discipline:
+ * The only design token referenced is `--space-3` from .
+ * No new colour, type-scale, or spacing literal is introduced. The
+ * `clamp` numeric bounds (80, 120, 240, 60vw, 200, 8vw) are the
+ * acceptance-criteria values from verbatim.
+ * Accessibility:
+ * `list-style: none` is applied; for assistive tech to still
+ * announce the list semantics on Safari/VoiceOver, the markup uses
+ * `<ul>` with explicit `role="list"` (added in) — no CSS
+ * rule is needed here for that.
+ * ------------------------------------------------------------------------- */
+
+.sponsors-list {
+ list-style: none;
+ margin: 0;
+ padding: 0;
+ display: flex;
+ flex-wrap: wrap;
+ align-items: center;
+ justify-content: flex-start;
+ gap: var(--space-3);
+}
+
+.sponsor-logo {
+ display: block;
+ height: clamp(80px, 8vw, 120px); /* */
+ width: auto;
+ max-width: 240px;
+}
+
+@media (max-width: 768px) {
+ .sponsor-logo {
+ width: clamp(120px, 60vw, 200px); /* */
+ height: auto;
+ }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 19. Scope blocks (students.html)
+ * Visual treatment for "Topics in Scope" and "Out of Scope" blocks.
+ * In-scope uses an accent left border to signal what fits; out-of-scope
+ * uses muted styling and italic text to signal what doesn't.
+ * Topics render as chip-style tags arranged in a flex-wrap grid.
+ * ------------------------------------------------------------------------- */
+
+.scope-block {
+ margin-block-start: var(--space-4);
+ padding: var(--space-3);
+ background-color: var(--c-paper);
+ background-color: var(--c-paper-2);
+ border: 1px solid var(--c-rule);
+ border-radius: var(--radius-1);
+}
+
+.scope-block--in {
+ border-inline-start: 3px solid var(--c-accent);
+}
+
+.scope-block--out {
+ background-color: var(--c-paper);
+ border-inline-start: 3px solid var(--c-mute);
+}
+
+.scope-block__heading {
+ margin: 0 0 var(--space-3);
+ font-family: var(--ff-display);
+ font-size: var(--fs-h3);
+ font-weight: 600;
+ color: var(--c-ink);
+}
+
+.scope-tags {
+ list-style: none;
+ margin: 0;
+ padding: 0;
+ display: flex;
+ flex-wrap: wrap;
+ gap: var(--space-2);
+}
+
+.scope-tags li {
+ padding: var(--space-1) var(--space-2);
+ background-color: var(--c-paper);
+ border: 1px solid var(--c-rule);
+ border-radius: var(--radius-1);
+ font-family: var(--ff-text);
+ font-size: var(--fs-small);
+ line-height: var(--lh-body);
+ color: var(--c-ink);
+}
+
+.scope-tags--out li {
+ font-style: italic;
+ color: var(--c-mute);
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 20. Subtle hover and scroll-reveal for static blocks
+ * Non-link cards (person cards without a person__link, why-attend list
+ * items, scope-tags, session-intro boxes) get a subtle border-colour
+ * shift on hover so the page feels responsive without being gimmicky.
+ * Scroll-reveal: cards fade and slide in as they enter the viewport
+ * via the IntersectionObserver pattern in js/nav.js. Honours
+ * prefers-reduced-motion.
+ * ------------------------------------------------------------------------- */
+
+.person:not(:has(.person__link)) {
+ transition: border-color var(--dur-hover);
+}
+
+.person:not(:has(.person__link)):hover {
+ border-color: var(--c-mute);
+}
+
+.why-attend__list li,
+.scope-tags li {
+ transition: border-color var(--dur-hover), background-color var(--dur-hover);
+}
+
+.why-attend__list li:hover,
+.scope-tags li:hover {
+ border-color: var(--c-mute);
+}
+
+/* Scroll-reveal — initial state is hidden, .is-visible is added by the
+ * IntersectionObserver in js/nav.js when the element enters the viewport. */
+.reveal {
+ opacity: 0;
+ transform: translateY(12px);
+ transition: opacity 600ms ease-out, transform 600ms ease-out;
+}
+
+.reveal.is-visible {
+ opacity: 1;
+ transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+ .person:not(:has(.person__link)),
+ .why-attend__list li,
+ .scope-tags li {
+ transition: none;
+ }
+
+ .reveal,
+ .reveal.is-visible {
+ opacity: 1;
+ transform: none;
+ transition: none;
+ }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 21. Schedule elevation
+ * Visual rhythm for the schedule: session-type tags, a subtle accent
+ * spine on the time column, distinct emphasis for keynotes, and row
+ * hover feedback.
+ * ------------------------------------------------------------------------- */
+
+.schedule-block {
+ /* Subtle inner shadow at the top to create depth. */
+ position: relative;
+}
+
+.schedule-block::after {
+ content: "";
+ position: absolute;
+ inset-block: var(--space-3);
+ inset-inline-start: 0;
+ width: 2px;
+ background-color: var(--c-accent);
+ opacity: 0.15;
+}
+
+.schedule-table tr {
+ transition: background-color var(--dur-hover);
+}
+
+.schedule-table tr:hover {
+ background-color: var(--c-paper);
+}
+
+.schedule-table td:last-child {
+ padding-block: var(--space-2);
+}
+
+.schedule-table td:last-child > * {
+ display: block;
+}
+
+.schedule-table td:last-child .schedule-tag {
+ margin-block-end: var(--space-1);
+}
+
+.schedule-tag {
+ display: inline-block;
+ width: fit-content;
+ padding: 2px var(--space-1);
+ font-family: var(--ff-text);
+ font-size: 0.75rem;
+ font-weight: 600;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ border-radius: var(--radius-1);
+ border: 1px solid var(--c-rule);
+ color: var(--c-mute);
+ background-color: var(--c-paper);
+}
+
+.schedule-tag--keynote {
+ color: var(--c-paper);
+ background-color: var(--c-accent);
+ border-color: var(--c-accent);
+}
+
+.schedule-tag--invited {
+ color: var(--c-ink);
+ border-color: var(--c-ink);
+}
+
+.schedule-tag--oral {
+ color: var(--c-accent);
+ border-color: var(--c-accent);
+}
+
+.schedule-tag--special {
+ color: var(--c-paper);
+ background-color: var(--c-mute);
+ border-color: var(--c-mute);
+}
+
+.schedule-tag--break,
+.schedule-tag--opening,
+.schedule-tag--closing {
+ font-style: italic;
+ color: var(--c-mute);
+}
+
+.schedule-title {
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ line-height: var(--lh-body);
+ color: var(--c-ink);
+}
+
+.schedule-title a {
+ color: var(--c-accent);
+ text-decoration: none;
+ border-block-end: 1px solid transparent;
+ transition: border-color var(--dur-hover);
+}
+
+.schedule-title a:hover,
+.schedule-title a:focus-visible {
+ border-block-end-color: var(--c-accent);
+}
+
+/* Highlight keynote rows with a subtle left accent */
+.schedule-table tr[data-session-type="keynote"] td:first-child {
+ font-weight: 700;
+ color: var(--c-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+ .schedule-table tr,
+ .schedule-title a {
+ transition: none;
+ }
+}

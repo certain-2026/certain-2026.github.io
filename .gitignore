@@ -1,0 +1,47 @@
+# Node toolchain
+node_modules/
+
+# Playwright artefacts
+test-results/
+playwright-report/
+
+# Lighthouse CI output
+.lighthouseci/
+
+# Local caches and tool artefacts
+.cache/
+.config/
+.local/
+.npm-cache/
+Downloads/
+
+# Editor settings
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Dev workflow / agent configs (not part of the public site)
+.claude/
+.kiro/
+
+# Dev tooling — not part of the served static site
+tests/
+scripts/
+Dockerfile
+Dockerfile.test
+docker-compose.yml
+README-DOCKER.md
+.dockerignore
+vitest.config.ts
+playwright.config.ts
+tsconfig.json
+lighthouserc.json
+package.json
+package-lock.json
+
+# Internal documentation artefacts
+CONTENT.md
+ATTRIBUTION.md
+.github/PULL_REQUEST_TEMPLATE.md

@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "heroImagery": {
+    "category": "hand-authored",
+    "sourcePath": "img/hero-mark.svg",
+    "notes": "Geometric/typographic composition authored in-house; no external source. See img/hero-mark.svg for the source XML and an XML comment header attributing it as hand-authored."
+  },
+  "people": [
+    {
+      "name": "Abhinandan Pal (Obi)",
+      "role": "Organiser",
+      "imagePath": "img/people/pal.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Huan Zhang",
+      "role": "Organiser",
+      "imagePath": "img/people/zhang.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Laura Kovács",
+      "role": "Organiser",
+      "imagePath": "img/people/kovacs.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Daniel Kröning",
+      "role": "Organiser",
+      "imagePath": "img/people/kroning.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Yoshua Bengio",
+      "role": "Keynote Speaker",
+      "imagePath": "img/people/bengio.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Leonardo de Moura",
+      "role": "Keynote Speaker",
+      "imagePath": "img/people/demoura.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Marta Kwiatkowska",
+      "role": "Keynote Speaker",
+      "imagePath": "img/people/kwiatkowska.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Shubho Sengupta",
+      "role": "Invited Speaker",
+      "imagePath": "img/people/sengupta.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Gabriel Poesia",
+      "role": "Invited Speaker",
+      "imagePath": "img/people/poesia.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Lucas Garcia",
+      "role": "Invited Speaker",
+      "imagePath": "img/people/garcia.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Mirco Giacobbe",
+      "role": "Invited Speaker",
+      "imagePath": "img/people/giacobbe.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Chuchu Fan",
+      "role": "Invited Speaker",
+      "imagePath": "img/people/fan.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Hiroshi Unno",
+      "role": "Senior Program Committee member",
+      "imagePath": "img/people/unno.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Luca Arnaboldi",
+      "role": "Senior Program Committee member",
+      "imagePath": "img/people/arnaboldi.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Toby Murray",
+      "role": "Senior Program Committee member",
+      "imagePath": "img/people/murray.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Xiyue Zhang",
+      "role": "Senior Program Committee member",
+      "imagePath": "img/people/xiyuezhang.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "Nina Narodytska",
+      "role": "Senior Program Committee member",
+      "imagePath": "img/people/narodytska.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    },
+    {
+      "name": "S. Akshay",
+      "role": "Senior Program Committee member",
+      "imagePath": "img/people/akshay.jpg",
+      "sourceUrl": "https://certain-2026.github.io/",
+      "retrievedOn": "2026-05-17",
+      "licence": "photograph as displayed on 2026-05-17; reused on the workshop's own site under the academic/fair-use rationale that the workshop is the canonical authority for identifying its own organisers, speakers, and committee.",
+      "removedOn": null,
+      "removalReason": null
+    }
+  ],
+  "placeholderExceptions": []
+}

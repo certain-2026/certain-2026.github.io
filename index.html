@@ -1,11 +1,551 @@
 <!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>CERTAIN Workshop</title>
-</head>
-<body>
-  <h1>CERTAIN Workshop</h1>
-  <p>Website coming soon.</p>
-</body>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="color-scheme" content="light dark">
+ <title>CERTAIN @ NeurIPS 2026 — Trust &amp; Assurance in AI</title>
+ <link rel="stylesheet" href="css/site.css">
+
+ <!-- Description & robots -->
+ <meta name="description" content="A NeurIPS 2026 workshop on certification, trust, and assurance in intelligent systems. Keynotes, invited talks, and student showcase.">
+ <meta name="robots" content="index, follow">
+ <meta name="theme-color" content="#faf8f4">
+ <link rel="canonical" href="https://certain-2026.github.io/">
+
+ <!-- Open Graph -->
+ <meta property="og:type" content="website">
+ <meta property="og:site_name" content="CERTAIN @ NeurIPS 2026">
+ <meta property="og:title" content="CERTAIN @ NeurIPS 2026 — Trust &amp; Assurance in AI">
+ <meta property="og:description" content="A NeurIPS 2026 workshop on certification, trust, and assurance in intelligent systems. Keynotes, invited talks, and student showcase.">
+ <meta property="og:url" content="https://certain-2026.github.io/">
+ <meta property="og:image" content="https://certain-2026.github.io/img/og-card-1200x630.png">
+ <meta property="og:image:width" content="1200">
+ <meta property="og:image:height" content="630">
+ <meta property="og:image:alt" content="CERTAIN @ NeurIPS 2026 — workshop on certification, trust, and assurance in intelligent systems">
+
+ <!-- Twitter / X -->
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="CERTAIN @ NeurIPS 2026 — Trust &amp; Assurance in AI">
+ <meta name="twitter:description" content="A NeurIPS 2026 workshop on certification, trust, and assurance in intelligent systems. Keynotes, invited talks, and student showcase.">
+ <meta name="twitter:image" content="https://certain-2026.github.io/img/og-card-1200x630.png">
+
+ <!-- schema.org Event JSON-LD -->
+ <script type="application/ld+json">
+ {
+ "@context": "https://schema.org",
+ "@type": "Event",
+ "name": "CERTAIN @ NeurIPS 2026",
+ "description": "A NeurIPS 2026 workshop on Certification, Trust, and Assurance in Intelligent Systems.",
+ "url": "https://certain-2026.github.io/",
+ "image": "https://certain-2026.github.io/img/og-card-1200x630.png",
+ "eventStatus": "https://schema.org/EventScheduled",
+ "eventAttendanceMode": "https://schema.org/MixedEventAttendanceMode",
+ "location": [
+ {
+ "@type": "Place",
+ "name": "NeurIPS 2026 (in-person venue TBA)",
+ "address": "TBA"
+ },
+ {
+ "@type": "VirtualLocation",
+ "url": "https://certain-2026.github.io/"
+ }
+ ],
+ "organizer": {
+ "@type": "Organization",
+ "name": "CERTAIN Workshop Organising Committee",
+ "url": "https://certain-2026.github.io/"
+ },
+ "performer": [
+ { "@type": "Person", "name": "Yoshua Bengio" },
+ { "@type": "Person", "name": "Leonardo de Moura" },
+ { "@type": "Person", "name": "Marta Kwiatkowska" },
+ { "@type": "Person", "name": "Shubho Sengupta" },
+ { "@type": "Person", "name": "Gabriel Poesia" },
+ { "@type": "Person", "name": "Lucas Garcia" },
+ { "@type": "Person", "name": "Mirco Giacobbe" },
+ { "@type": "Person", "name": "Chuchu Fan" }
+ ]
+ }
+ </script>
+
+ <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="icon" href="img/favicon.svg">
+ </head>
+ <body>
+ <a class="skip-link" href="#main">Skip to main content</a>
+ <header class="site-header">
+ <nav class="site-nav" aria-label="Primary">
+ <a class="site-nav__brand" href="index.html">CERTAIN @ NeurIPS 2026</a>
+ <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list" aria-label="Open navigation menu"><span class="hamburger" aria-hidden="true"></span></button>
+ <ul id="site-nav-list" class="site-nav__list" data-open="false">
+ <li><a href="index.html" aria-current="page">Home</a></li>
+ <li><a href="students.html">Student Research Showcase</a></li>
+ <li><a href="schedule.html">The Schedule</a></li>
+ <li><a href="sessions.html">Sessions</a></li>
+ </ul>
+ </nav>
+ </header>
+ <main id="main">
+ <section class="hero" aria-labelledby="hero-title">
+ <p class="hero__status">Proposed Workshop (Subject to Acceptance)</p>
+ <h1 id="hero-title" class="hero__title">CERTAIN @ NeurIPS 2026</h1>
+ <p class="hero__subtitle">CERtification, Trust, and Assurance in INtelligent Systems.</p>
+ <p class="hero__tagline">Beyond benchmarks, toward guarantees we can be certain of.</p>
+ <p class="hero__keyfacts">
+ <span class="hero__keyfacts-item">NeurIPS 2026</span>
+ <span class="hero__keyfacts-sep" aria-hidden="true">·</span>
+ <span class="hero__keyfacts-item">Date TBA</span>
+ </p>
+ </section>
+
+ <nav class="inpage-nav" aria-label="Sections on this page">
+ <ul>
+ <li><a href="#workshop-format">Format</a></li>
+ <li><a href="#organisation">Organisation</a></li>
+ <li><a href="#keynote-speakers">Keynote Speakers</a></li>
+ <li><a href="#invited-speakers">Invited Speakers</a></li>
+ <li><a href="#senior-program-committee">Senior Program Committee</a></li>
+ <li><a href="#program-committee">Program Committee</a></li>
+ <li><a href="#sponsors">Sponsors</a></li>
+ </ul>
+ </nav>
+
+ <section id="workshop-format" class="section" aria-labelledby="workshop-format-heading">
+ <h2 id="workshop-format-heading" class="section__heading">Workshop Format</h2>
+ <div class="section__body">
+ <ol class="format-grid">
+ <li>
+ <a class="format-card" href="students.html">
+ <span class="format-card__num" aria-hidden="true">01</span>
+ <h3 class="format-card__title">Student Research Showcase</h3>
+ <p class="format-card__body">Students submit non-archival two-page abstracts, present posters, and compete for spotlight talks and awards. The format welcomes early work and gives oral presenters senior mentoring.</p>
+ <ul class="format-card__tags">
+ <li>Posters</li>
+ <li>Spotlights</li>
+ <li>Awards</li>
+ </ul>
+ <span class="format-card__more" aria-hidden="true">Read more →</span>
+ </a>
+ </li>
+ <li>
+ <a class="format-card" href="sessions.html#find-your-future-team">
+ <span class="format-card__num" aria-hidden="true">02</span>
+ <h3 class="format-card__title">Find Your Future Team</h3>
+ <p class="format-card__body">Academic labs and industry teams give three-minute pitches on their priorities, open problems, and opportunities, including PhD, RA, postdoctoral, internship, and full-time roles.</p>
+ <ul class="format-card__tags">
+ <li>Lab pitches</li>
+ <li>Roles</li>
+ <li>Matching</li>
+ </ul>
+ <span class="format-card__more" aria-hidden="true">Read more →</span>
+ </a>
+ </li>
+ <li>
+ <a class="format-card" href="sessions.html#guided-brainstorming">
+ <span class="format-card__num" aria-hidden="true">03</span>
+ <h3 class="format-card__title">Guided Brainstorming</h3>
+ <p class="format-card__body">Small groups discuss open problems in certification, trust, and assurance. Senior researchers rotate between tables to help students turn broad ideas into concrete directions.</p>
+ <ul class="format-card__tags">
+ <li>Small groups</li>
+ <li>Open problems</li>
+ </ul>
+ <span class="format-card__more" aria-hidden="true">Read more →</span>
+ </a>
+ </li>
+ <li>
+ <a class="format-card" href="#keynote-speakers">
+ <span class="format-card__num" aria-hidden="true">04</span>
+ <h3 class="format-card__title">Keynotes and Invited Talks</h3>
+ <p class="format-card__body">Leading researchers connect deep learning, model checking, theorem proving, AI verification, safety-critical AI, and automated reasoning through keynotes, invited talks, and an AMA.</p>
+ <ul class="format-card__tags">
+ <li>Keynotes</li>
+ <li>Invited talks</li>
+ <li>AMA</li>
+ </ul>
+ <span class="format-card__more" aria-hidden="true">Read more →</span>
+ </a>
+ </li>
+ </ol>
+ </div>
+ </section>
+
+ <section id="organisation" class="section" aria-labelledby="organisation-heading">
+ <h2 id="organisation-heading" class="section__heading">Organisation</h2>
+ <div class="section__body">
+ <ul class="people-grid">
+ <li>
+ <article class="person">
+ <a href="https://www.abhinandanpal.co.in/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/pal.jpg" alt="Abhinandan Pal (Obi), Organiser" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Abhinandan Pal (Obi)</h3>
+ <p class="person__role">General Chair</p>
+ <div class="person__affiliations">
+ <p class="person__affiliation">University of Birmingham</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ <li>
+ <article class="person">
+ <a href="https://www.huan-zhang.com/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/zhang.jpg" alt="Huan Zhang, Organiser" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Huan Zhang</h3>
+ <p class="person__role">Program Chair</p>
+ <div class="person__affiliations">
+ <p class="person__affiliation">University of Illinois</p>
+ <p class="person__affiliation">Urbana-Champaign</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ <li>
+ <article class="person">
+ <a href="https://www.lkovacs.com/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/kovacs.jpg" alt="Laura Kovács, Organiser" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Laura Kovács</h3>
+ <p class="person__role">Mentoring Chair</p>
+ <div class="person__affiliations">
+ <p class="person__affiliation">TU Wien</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ <li>
+ <article class="person">
+ <a href="https://www.kroening.com/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/kroning.jpg" alt="Daniel Kröning, Organiser" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Daniel Kröning</h3>
+ <p class="person__role">Senior Advisor</p>
+ <div class="person__affiliations">
+ <p class="person__affiliation">Amazon</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ </ul>
+ </div>
+ </section>
+
+ <section id="keynote-speakers" class="section" aria-labelledby="keynote-speakers-heading">
+ <h2 id="keynote-speakers-heading" class="section__heading">Keynote Speakers</h2>
+ <div class="section__body">
+ <ul class="people-grid">
+ <li id="speaker-bengio">
+ <article class="person">
+ <a href="https://yoshuabengio.org/en" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/bengio.jpg" alt="Yoshua Bengio, Keynote Speaker" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Yoshua Bengio</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">Université de Montréal</p>
+ <p class="person__affiliation">LawZero, Mila</p>
+ </div>
+ </a>
+ <details class="speaker-bio">
+ <summary class="speaker-bio__toggle">
+ <span class="speaker-bio__label">Biography</span>
+ <span class="speaker-bio__indicator" aria-hidden="true"></span>
+ </summary>
+ <div class="speaker-bio__content">
+ <p>Yoshua Bengio is Professor of Computer Science at Université de Montréal, Founder and Scientific Advisor of Mila, and Co-President and Scientific Director of LawZero. He is one of the pioneers of deep learning and received the 2018 A.M. Turing Award, alongside Geoffrey Hinton and Yann LeCun, for foundational contributions to the field. His recent work has focused on AI safety, trustworthy systems, and the social impact of advanced AI.</p>
+ </div>
+ </details>
+ </article>
+ </li>
+ <li id="speaker-demoura">
+ <article class="person">
+ <a href="https://leodemoura.github.io/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/demoura.jpg" alt="Leonardo de Moura, Keynote Speaker" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Leonardo de Moura</h3>
+ <p class="person__annotation">(Ask Me Anything Session)</p>
+ <div class="person__affiliations">
+ <p class="person__affiliation">Amazon</p>
+ </div>
+ </a>
+ <details class="speaker-bio">
+ <summary class="speaker-bio__toggle">
+ <span class="speaker-bio__label">Biography</span>
+ <span class="speaker-bio__indicator" aria-hidden="true"></span>
+ </summary>
+ <div class="speaker-bio__content">
+ <p>Leonardo de Moura is a Senior Principal Applied Scientist in the Automated Reasoning Group at AWS. In his spare time, he serves as Chief Architect of the Lean FRO, a non-profit he co-founded with Sebastian Ullrich. Before joining AWS in 2023, he spent 17 years in the RiSE group at Microsoft Research, where he was a Senior Principal Researcher from 2006. Before that, he was a Computer Scientist at SRI International. His research areas are automated reasoning, theorem proving, decision procedures, SAT, and SMT. He is the main architect of several automated reasoning tools: Lean, Z3, Yices 1.0, and SAL. His work in automated reasoning has been recognized with the CAV, Haifa, and Herbrand awards, as well as the ACM Programming Languages Software Award.</p>
+ </div>
+ </details>
+ </article>
+ </li>
+ <li id="speaker-kwiatkowska">
+ <article class="person">
+ <a href="https://www.cs.ox.ac.uk/people/marta.kwiatkowska/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/kwiatkowska.jpg" alt="Marta Kwiatkowska, Keynote Speaker" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Marta Kwiatkowska</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">University of Oxford</p>
+ </div>
+ </a>
+ <details class="speaker-bio">
+ <summary class="speaker-bio__toggle">
+ <span class="speaker-bio__label">Biography</span>
+ <span class="speaker-bio__indicator" aria-hidden="true"></span>
+ </summary>
+ <div class="speaker-bio__content">
+ <p>Marta Kwiatkowska is Professor of Computing Systems and Fellow of Trinity College, University of Oxford. She is known for fundamental contributions to the theory and practice of model checking for probabilistic systems and is currently focusing on safety and robustness of automated decision-making in Artificial Intelligence. She led the development of the PRISM model checker, which has been adopted in diverse fields, including wireless networks, security, robotics, healthcare, and DNA computing, with genuine flaws found and corrected in real-world protocols. Kwiatkowska won two ERC Advanced Grants, the Royal Society Milner Award, the BCS Lovelace Medal, and the Van Wijngaarden Award. She is a Fellow of the Royal Society, ACM, Academia Europaea, and the American Academy of Arts and Sciences.</p>
+ </div>
+ </details>
+ </article>
+ </li>
+ </ul>
+ </div>
+ </section>
+
+ <section id="invited-speakers" class="section" aria-labelledby="invited-speakers-heading">
+ <h2 id="invited-speakers-heading" class="section__heading">Invited Speakers</h2>
+ <div class="section__body">
+ <ul class="people-grid">
+ <li id="speaker-sengupta">
+ <article class="person">
+ <a href="https://www.linkedin.com/in/shubho-sengupta-340587" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/sengupta.jpg" alt="Shubho Sengupta, Invited Speaker" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Shubho Sengupta</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">Axiom Math</p>
+ </div>
+ </a>
+ <details class="speaker-bio">
+ <summary class="speaker-bio__toggle">
+ <span class="speaker-bio__label">Biography</span>
+ <span class="speaker-bio__indicator" aria-hidden="true"></span>
+ </summary>
+ <div class="speaker-bio__content">
+ <p>Shubho Sengupta has spent over a decade working in deep learning, at Baidu Silicon Valley AI Lab and Meta AI. His work has covered speech recognition, text-to-speech, large-scale reinforcement learning for Go, and the scaling of deep learning systems. More recently, he has focused on using large language models to build automated software systems. He is currently CTO of Axiom Math, where he is building a self-improving AI reasoner, beginning with an AI mathematician.</p>
+ </div>
+ </details>
+ </article>
+ </li>
+ <li id="speaker-poesia">
+ <article class="person">
+ <a href="https://gpoesia.com/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/poesia.jpg" alt="Gabriel Poesia, Invited Speaker" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Gabriel Poesia</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">Harvard</p>
+ <p class="person__affiliation">University of Michigan</p>
+ </div>
+ </a>
+ <details class="speaker-bio">
+ <summary class="speaker-bio__toggle">
+ <span class="speaker-bio__label">Biography</span>
+ <span class="speaker-bio__indicator" aria-hidden="true"></span>
+ </summary>
+ <div class="speaker-bio__content">
+ <p>Gabriel Poesia is an incoming Assistant Professor at the University of Michigan, a current Research Fellow at Harvard University's Kempner Institute, and a recent PhD graduate of Stanford University. He works on building self-improving AI systems that are capable of formal reasoning and open-ended discovery.</p>
+ </div>
+ </details>
+ </article>
+ </li>
+ <li id="speaker-garcia">
+ <article class="person">
+ <a href="https://www.mathworks.com/matlabcentral/profile/authors/1296922" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/garcia.jpg" alt="Lucas Garcia, Invited Speaker" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Lucas Garcia</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">MathWorks</p>
+ </div>
+ </a>
+ <details class="speaker-bio">
+ <summary class="speaker-bio__toggle">
+ <span class="speaker-bio__label">Biography</span>
+ <span class="speaker-bio__indicator" aria-hidden="true"></span>
+ </summary>
+ <div class="speaker-bio__content">
+ <p>Lucas Garcia is Senior Principal Product Manager for AI at MathWorks, with more than 20 years of experience in machine learning and the software industry. He works with customer-facing and development teams to define and launch new AI capabilities, and is an active member of the EUROCAE WG-114/SAE G-34 working group developing the ARP6983 standard for aircraft systems that use AI. He holds a PhD in applied mathematics from the Complutense University of Madrid and Polytechnic University of Madrid, and his research focuses on neural approaches to combinatorial optimization.</p>
+ </div>
+ </details>
+ </article>
+ </li>
+ <li id="speaker-giacobbe">
+ <article class="person">
+ <a href="https://mircogiacobbe.github.io/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/giacobbe.jpg" alt="Mirco Giacobbe, Invited Speaker" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Mirco Giacobbe</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">University of Birmingham</p>
+ <p class="person__affiliation">Zeroth Research</p>
+ </div>
+ </a>
+ <details class="speaker-bio">
+ <summary class="speaker-bio__toggle">
+ <span class="speaker-bio__label">Biography</span>
+ <span class="speaker-bio__indicator" aria-hidden="true"></span>
+ </summary>
+ <div class="speaker-bio__content">
+ <p>Mirco Giacobbe is an Associate Professor at the University of Birmingham. He received his PhD from IST Austria and held research positions at the University of Oxford and the Bruno Kessler Foundation. He develops automated techniques for verifying the safety and security of algorithmic systems by combining machine learning with automated reasoning. He founded the International Symposium on AI Verification (SAIV) and Zeroth Research, a non-profit focused on technical AI safety.</p>
+ </div>
+ </details>
+ </article>
+ </li>
+ <li id="speaker-fan">
+ <article class="person">
+ <a href="https://chuchu.mit.edu/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/fan.jpg" alt="Chuchu Fan, Invited Speaker" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Chuchu Fan</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">MIT</p>
+ </div>
+ </a>
+ <details class="speaker-bio">
+ <summary class="speaker-bio__toggle">
+ <span class="speaker-bio__label">Biography</span>
+ <span class="speaker-bio__indicator" aria-hidden="true"></span>
+ </summary>
+ <div class="speaker-bio__content">
+ <p>Chuchu Fan is an Associate Professor at MIT. She was previously a postdoctoral researcher at Caltech and received her PhD from the University of Illinois at Urbana-Champaign. She earned her bachelor's degree from Tsinghua University. Her group, Realm at MIT, develops computational tools that combine rigorous mathematics with machine learning and AI for the design, analysis, and verification of safe, large-scale systems. She has received an NSF CAREER Award, AFOSR and ONR YIP Awards, an RSS Outstanding Student Paper Award, and the 2020 ACM Doctoral Dissertation Award.</p>
+ </div>
+ </details>
+ </article>
+ </li>
+ </ul>
+ </div>
+ </section>
+
+ <section id="senior-program-committee" class="section" aria-labelledby="senior-program-committee-heading">
+ <h2 id="senior-program-committee-heading" class="section__heading">Senior Program Committee</h2>
+ <div class="section__body">
+ <ul class="people-grid">
+ <li>
+ <article class="person">
+ <a href="https://www.riec.tohoku.ac.jp/~unno/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/unno.jpg" alt="Hiroshi Unno, Senior Program Committee member" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Hiroshi Unno</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">Tohoku University</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ <li>
+ <article class="person">
+ <a href="https://www.birmingham.ac.uk/staff/profiles/computer-science/academic-staff/arnaboldi-luca.aspx" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/arnaboldi.jpg" alt="Luca Arnaboldi, Senior Program Committee member" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Luca Arnaboldi</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">University of Birmingham</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ <li>
+ <article class="person">
+ <a href="https://findanexpert.unimelb.edu.au/profile/780796-toby-murray" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/murray.jpg" alt="Toby Murray, Senior Program Committee member" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Toby Murray</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">University of Melbourne</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ <li>
+ <article class="person">
+ <a href="https://zhang-xiyue.github.io/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/xiyuezhang.jpg" alt="Xiyue Zhang, Senior Program Committee member" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Xiyue Zhang</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">University of Bristol</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ <li>
+ <article class="person">
+ <a href="https://narodytska.com/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/narodytska.jpg" alt="Nina Narodytska, Senior Program Committee member" width="320" height="320" loading="lazy">
+ <h3 class="person__name">Nina Narodytska</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">VMware</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ <li>
+ <article class="person">
+ <a href="https://www.cse.iitb.ac.in/~akshayss/" target="_blank" rel="noopener" class="person__link">
+ <img class="person__photo" src="img/people/akshay.jpg" alt="S. Akshay, Senior Program Committee member" width="320" height="320" loading="lazy">
+ <h3 class="person__name">S. Akshay</h3>
+ <div class="person__affiliations">
+ <p class="person__affiliation">IIT Bombay</p>
+ </div>
+ </a>
+ </article>
+ </li>
+ </ul>
+ </div>
+ </section>
+
+ <section id="program-committee" class="section" aria-labelledby="program-committee-heading">
+ <h2 id="program-committee-heading" class="section__heading">Programme Committee</h2>
+ <div class="section__body">
+ <table class="pc-table">
+ <thead>
+ <tr>
+ <th>Name</th>
+ <th>Affiliation</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr><td>Ajinkya Naik</td><td>IIT Bombay</td></tr>
+ <tr><td>Alexander Pluska</td><td>TU Wien</td></tr>
+ <tr><td>Anagha Athavale</td><td>TU Wien</td></tr>
+ <tr><td>Aniruddha Joshi</td><td>UC Berkeley</td></tr>
+ <tr><td>Avaljot Singh</td><td>University of Illinois Urbana-Champaign</td></tr>
+ <tr><td>Chenxi Ji</td><td>University of Illinois Urbana-Champaign</td></tr>
+ <tr><td>Daneshvar Amrollahi</td><td>Stanford University</td></tr>
+ <tr><td>Duo Zhou</td><td>University of Illinois Urbana-Champaign</td></tr>
+ <tr><td>Eline M. Bovy</td><td>Radboud University</td></tr>
+ <tr><td>Hai Duong</td><td>George Mason University</td></tr>
+ <tr><td>Hanna Lachnitt</td><td>Stanford University</td></tr>
+ <tr><td>Haoyu Li</td><td>University of Illinois Urbana-Champaign</td></tr>
+ <tr><td>John Zhengyang Lu</td><td>University of Waterloo</td></tr>
+ <tr><td>Liqiang Shang</td><td>University of Bristol</td></tr>
+ <tr><td>Mohamed Ghanem</td><td>CISPA Helmholtz Center for Information Security &amp; Technical University of Munich</td></tr>
+ <tr><td>Nianyun Song</td><td>University of Bristol &amp; Beijing Normal University</td></tr>
+ <tr><td>Niklas Metzger</td><td>CISPA Helmholtz Center for Information Security</td></tr>
+ <tr><td>Omar Adalat</td><td>Imperial College London</td></tr>
+ <tr><td>Peiyang Song</td><td>Carnegie Mellon University &amp; California Institute of Technology</td></tr>
+ <tr><td>Shuyi Lin</td><td>Northeastern University</td></tr>
+ <tr><td>Stefan Pranger</td><td>Graz University of Technology</td></tr>
+ <tr><td>Takashi Suwa</td><td>Kyoto University &amp; Imiron</td></tr>
+ <tr><td>Tsai Yun Chen</td><td>National Institute of Informatics</td></tr>
+ <tr><td>Wietze Koops</td><td>Lund University &amp; University of Copenhagen</td></tr>
+ <tr><td>Xiangru Zhong</td><td>University of Illinois Urbana-Champaign</td></tr>
+ <tr><td>Yuning Wang</td><td>Rutgers University-New Brunswick</td></tr>
+ <tr><td>Yuxin Lin</td><td>Peking University</td></tr>
+ </tbody>
+ </table>
+ </div>
+ </section>
+
+ <section id="sponsors" class="section" aria-labelledby="sponsors-heading">
+ <h2 id="sponsors-heading" class="section__heading">Sponsored by:</h2>
+ <div class="section__body">
+ <ul class="sponsors-list">
+ <li>
+ <img class="sponsor-logo"
+ src="img/sponsor-logo.png"
+ alt="Workshop sponsor logo"
+ width="200"
+ height="80"
+ loading="lazy">
+ </li>
+ </ul>
+ </div>
+ </section>
+ </main>
+ <footer class="site-footer">
+ <p class="site-footer__name">CERTAIN @ NeurIPS 2026</p>
+ <p class="site-footer__status">Proposed Workshop (Subject to Acceptance)</p>
+ <p class="site-footer__home"><a href="index.html">Home</a></p>
+ </footer>
+ <script src="js/nav.js" defer></script>
+ </body>
 </html>

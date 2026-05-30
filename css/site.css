@@ -1102,6 +1102,35 @@ img.person__photo {
  }
 }
 
+/* --- Submissions grid variant (students.html Call for Submissions) --------
+ * Layout: Row 1 has 4 compact cards (Categories, Awards, Requirements,
+ * Submission Link). Row 2 has 2 wider cards (Timeline, Visa Support) each
+ * spanning half the full width — twice as wide as the row-1 cards.
+ * CSS `order` resequences visually while keeping HTML in logical 01–06
+ * reading order. Tablet: 2 columns. Mobile: single column. */
+@media (min-width: 1024px) {
+ .format-grid--submissions {
+ grid-template-columns: repeat(4, minmax(0, 1fr));
+ }
+ /* Row 1: four compact cards, one column each */
+ .format-grid--submissions > li:nth-child(1) { order: 1; }
+ .format-grid--submissions > li:nth-child(2) { order: 2; }
+ .format-grid--submissions > li:nth-child(3) { order: 3; }
+ .format-grid--submissions > li:nth-child(6) { order: 4; }
+ /* Row 2: Timeline and Visa Support span 2 columns each (2× wider) */
+ .format-grid--submissions > li:nth-child(4) { order: 5; grid-column: span 2; }
+ .format-grid--submissions > li:nth-child(5) { order: 6; grid-column: span 2; }
+}
+
+/* Dates inside the submissions cards: force bold rendering even if the
+ * font file lacks a distinct 700 weight. Uses font-weight: 800 as a
+ * fallback to trigger faux-bold synthesis when needed. */
+.format-grid--submissions .format-card__body strong {
+ font-weight: 800;
+ color: var(--c-ink);
+ -webkit-text-stroke: 0.3px var(--c-ink);
+}
+
 /* --- Card ----------------------------------------------------------------
  * The entire card is a single hyperlink so the whole rectangle is hittable.
  * It is laid out as a vertical flex column so the optional "Read more →"
@@ -1229,6 +1258,7 @@ img.person__photo {
  margin: var(--space-1) 0 0;
  font-family: var(--ff-text);
  font-size: var(--fs-base);
+ font-weight: 400;
  line-height: var(--lh-body);
  color: var(--c-ink);
 }
@@ -1242,8 +1272,9 @@ img.person__photo {
  margin: var(--space-1) 0 0;
  padding: 0;
  font-family: var(--ff-text);
- font-size: var(--fs-small);
- color: var(--c-mute);
+ font-size: var(--fs-base);
+ font-weight: 600;
+ color: var(--c-ink);
 }
 
 .format-card__tags li {
@@ -1254,6 +1285,7 @@ img.person__photo {
 .format-card__tags li + li::before {
  content: " · ";
  color: var(--c-mute);
+ font-weight: 400;
 }
 
 /* --- Read-more affordance ------------------------------------------------

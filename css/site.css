@@ -654,6 +654,36 @@ pre {
  color: var(--c-mute);
 }
 
+/* --- Hero hook block -----------------------------------------------------
+ * An attention-grabbing question + answer pair below the tagline. The
+ * question uses the display serif at a larger size; the answer uses the
+ * body serif at normal size. No decorative border — just typographic
+ * contrast and spacing. */
+.hero__hook {
+ margin: var(--space-3) 0 0;
+ padding: 0;
+ border: none;
+}
+
+.hero__hook-question {
+ margin: 0 0 var(--space-2);
+ font-family: var(--ff-display);
+ font-size: clamp(1.15rem, 1.5vw + 0.5rem, 1.5rem);
+ font-weight: 600;
+ font-style: italic;
+ line-height: 1.35;
+ color: var(--c-ink);
+}
+
+.hero__hook-answer {
+ margin: 0;
+ font-family: var(--ff-text);
+ font-size: var(--fs-base);
+ font-weight: 400;
+ line-height: var(--lh-body);
+ color: var(--c-mute);
+}
+
 /* ---------------------------------------------------------------------------
  * Tablet — 769–1023 px
  * Keep the flex-column stack so text wraps naturally without overlap and
@@ -693,6 +723,14 @@ pre {
 
  .hero__tagline {
  font-size: clamp(0.95rem, 4vw, 1.0625rem); /* ≥ 15.2 px → ≥ 14 px */
+ }
+
+ .hero__hook {
+ margin-block-start: var(--space-2);
+ }
+
+ .hero__hook-question {
+ font-size: clamp(1rem, 4vw, 1.25rem);
  }
 }
 
@@ -1408,6 +1446,43 @@ img.person__photo {
  white-space: nowrap;
  padding-right: var(--space-3);
  color: var(--c-ink);
+}
+
+/* ---------------------------------------------------------------------------
+ * Schedule table — mobile (≤ 768 px)
+ * The two-column time/session layout cramps on narrow screens, so each row
+ * collapses to a stacked block: the time sits on its own line above the
+ * session content. Table elements are switched to block display and the
+ * row keeps its bottom hairline as a separator.
+ * ------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+ .schedule-table,
+ .schedule-table tbody,
+ .schedule-table tr,
+ .schedule-table td {
+ display: block;
+ width: 100%;
+ }
+
+ .schedule-table tr {
+ padding-block: var(--space-2);
+ border-bottom: 1px solid var(--c-rule);
+ }
+
+ .schedule-table tr:last-child {
+ border-bottom: none;
+ }
+
+ .schedule-table td {
+ padding: 0;
+ border-bottom: none;
+ }
+
+ .schedule-table__time {
+ padding-right: 0;
+ margin-bottom: var(--space-1);
+ color: var(--c-mute);
+ }
 }
 
 
@@ -2260,6 +2335,14 @@ img.person__photo {
 
 .schedule-table td:last-child {
  padding-block: var(--space-2);
+}
+
+/* Mobile: neutralise the desktop td:last-child padding so the stacked
+ * block layout (defined earlier in the mobile media query) isn't offset. */
+@media (max-width: 768px) {
+ .schedule-table td:last-child {
+ padding-block: 0;
+ }
 }
 
 .schedule-table td:last-child > * {
